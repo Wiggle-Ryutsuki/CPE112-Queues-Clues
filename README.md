@@ -1,6 +1,7 @@
 # CPE112 — Final Project
 ## Queue's Clues — [Project Name]
 Problem: 
+
 Data Structures:
 - [Data structure]
 - [Data structure]

@@ -15,7 +15,46 @@ Programming Language:
 [Description and goal of project]
 
 ## How To Run Code
-[Information]
+### At the beginning of the program a menu would display:
+1. Movement
+2. Inventory
+3. Look around
+4. Instructions
+5. Quit
+
+### Picking option 1 (movement) will display a submenu:
+1. go left
+2. go right
+3. go back
+4. previous menu
+
+### Picking option 2 (Inventory) will display the inventory and a submenu:
+
+Item_Name | Item_description
+
+Item_Name | Item_description
+
+Item_Name | Item_description
+
+...
+
+1. Use an item
+
+   - Prompt user to enter item name (challenge)
+   
+2. previous menu
+
+### Picking option 3 (Look Around) will display:
+Area information
+Picking this option 3 times will give more obvious clues.
+
+### Picking option 4 (Instructions) will explain:
+
+- objective, what the player has to do.
+- what each command does
+
+### Picking option 5 (Quit) will:
+- Display the score and times then exit the program
 
 ## Deliverables
 
@@ -45,8 +84,8 @@ Code Focus:
 
 ### World and Movement Systems Developer
 
-- Name: [Name]
-- ID: 6707050[ID]
+- Name: Muhammad Asad Aziz
+- ID: 67070503472
 
 Code Focus:
 

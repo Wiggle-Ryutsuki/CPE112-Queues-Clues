@@ -1,11 +1,16 @@
 # CPE112 — Final Project
-## Queue's Clues — [Project Name]
-Problem: 
+## Queue's Clues — Adventure Game
+Problem: : Embark on a quest for a lost artifact in a tightly woven world. Explore, uncover
+secrets, and solve a puzzle to claim your prize.
 
 Data Structures:
-- [Data structure]
-- [Data structure]
-- [Data structure]
+- Graphs — Represents game world
+- Arrays — Player's inventory.
+- Hash Table — To quickly access descriptions of locations and items.
+- Stacks — Player movement (go back)
+
+Programming Language:
+- C
 
 [Description and goal of project]
 
@@ -38,7 +43,7 @@ Code Focus:
     - Calls functions developed by other team members.
     - Manages integration and ensures smooth interaction between modules.
 
-### [Feature Name]
+### World and Movement Systems Developer
 
 - Name: [Name]
 - ID: 6707050[ID]
@@ -52,7 +57,7 @@ Helper File:
 
 - `helperfile.h`
 
-### [Feature Name]
+### Inventory and Item Interaction Developer
 
 - Name: [Name]
 - ID: 6707050[ID]

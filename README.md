@@ -25,9 +25,11 @@ Programming Language:
 The user can pick these options by typing in their commands in the terminal, for instance, if the user wants to view their inventory, entering "Inventory" in the terminal would cause the program to prints out the entire inventory.
 
 
-### Moving is done by typing in the correct direction of movement in the terminal. Moving to each location/node in the graph would display the description of that location/node, hilighting the direction in brackets. So if the description of a location/nodes states that the user can move by going [Left] or [Across] the user can type either left or across to traverse the graph.
+### Movement
+Moving is done by typing in the correct direction of movement in the terminal. Moving to each location/node in the graph would display the description of that location/node, hilighting the direction in brackets. So if the description of a location/nodes states that the user can move by going [Left] or [Across] the user can type either left or across to traverse the graph.
 
-### Typing in 'inventory' in the terminal would display something like this:
+### Inventory
+Typing in 'inventory' in the terminal would display something like this:
 
 Item_Name | Item_description
 
@@ -39,19 +41,23 @@ Item_Name | Item_description
 
 If the player types in "use" then an item's name, then the player can interact with that item.
 
-### If the player types "Look" in the terminal, the description of the locations would be displayed again, but being more descriptive and helpful so as to act as a way to give hints to the user
+### Looking Around 
+If the player types "Look" in the terminal, the description of the locations would be displayed again, but being more descriptive and helpful so as to act as a way to give hints to the user
 Area information
 Picking this option 3 times will give more obvious clues.
 
-### Typing in "Instructions" or "help" would display a guide on how to use the program
+### Instructions 
+Typing in "Instructions" or "help" would display a guide on how to use the program.
 
 - objective, what the player has to do.
 - what each command does
 
-### If the Player types in "Quit" then the program closes
+### Quit 
+If the Player types in "Quit" then the program closes
 - Display the score and times then exit the program
 
-### If the player doesn't type anything in, then nothing would happen
+### Base Case 
+If the player doesn't type anything in, then nothing would happen
 
 ## Deliverables
 

@@ -42,9 +42,7 @@ Item_Name | Item_description
 If the player types in "use" then an item's name, then the player can interact with that item.
 
 ### Looking Around 
-If the player types "Look" in the terminal, the description of the locations would be displayed again, but being more descriptive and helpful so as to act as a way to give hints to the user
-Area information
-Picking this option 3 times will give more obvious clues.
+If the player types "Look" in the terminal, the description of the locations would be displayed again, but being more descriptive and helpful so as to act as a way to give hints to the user.
 
 ### Instructions 
 Typing in "Instructions" or "help" would display a guide on how to use the program.

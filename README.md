@@ -15,20 +15,19 @@ Programming Language:
 [Description and goal of project]
 
 ## How To Run Code
-### At the beginning of the program a menu would display:
-1. Movement
-2. Inventory
+### At the beginning of the program the user can do 1 of 5 things
+1. Move around
+2. Open Inventory
 3. Look around
-4. Instructions
-5. Quit
+4. Open Instructions
+5. Quit Program
 
-### Picking option 1 (movement) will display a submenu:
-1. go left
-2. go right
-3. go back
-4. previous menu
+The user can pick these options by typing in their commands in the terminal, for instance, if the user wants to view their inventory, entering "Inventory" in the terminal would cause the program to prints out the entire inventory.
 
-### Picking option 2 (Inventory) will display the inventory and a submenu:
+
+### Moving is done by typing in the correct direction of movement in the terminal. Moving to each location/node in the graph would display the description of that location/node, hilighting the direction in brackets. So if the description of a location/nodes states that the user can move by going [Left] or [Across] the user can type either left or across to traverse the graph.
+
+### Typing in 'inventory' in the terminal would display something like this:
 
 Item_Name | Item_description
 
@@ -38,23 +37,21 @@ Item_Name | Item_description
 
 ...
 
-1. Use an item
+If the player types in "use" then an item's name, then the player can interact with that item.
 
-   - Prompt user to enter item name (challenge)
-   
-2. previous menu
-
-### Picking option 3 (Look Around) will display:
+### If the player types "Look" in the terminal, the description of the locations would be displayed again, but being more descriptive and helpful so as to act as a way to give hints to the user
 Area information
 Picking this option 3 times will give more obvious clues.
 
-### Picking option 4 (Instructions) will explain:
+### Typing in "Instructions" or "help" would display a guide on how to use the program
 
 - objective, what the player has to do.
 - what each command does
 
-### Picking option 5 (Quit) will:
+### If the Player types in "Quit" then the program closes
 - Display the score and times then exit the program
+
+### If the player doesn't type anything in, then nothing would happen
 
 ## Deliverables
 

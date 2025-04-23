@@ -34,6 +34,7 @@ void addItem(int ID, char Name[], char Desc[]){
 }
 
 
+// Function that removes item from inventory
 void removeItem(int ID){
     // Error checking
     if (ID < 0 || ID >= MAX_OBJECTS || Inventory[ID].id == -1) {

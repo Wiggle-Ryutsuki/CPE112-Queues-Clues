@@ -41,6 +41,32 @@ void printForest(){
 }
 
 
+// Print Cave
+void printCave(){
+    printf("                       :*#**#:                    \n");
+    printf("                   #@@@.   .@@@@%%                  \n");
+    printf("               *@- :@   :@+      -:                \n");
+    printf("              =  *+=# -+  =:      -.               \n");
+    printf("             + +- =:-+     +       =               \n");
+    printf("           :- *  + +    -- -     @  +              \n");
+    printf("          :++-   @*.  :*          # .+             \n");
+    printf("        -*#@    %%@   =:        .+*@=++==*          \n");
+    printf("       :   #  ##*=   #   +         -     @         \n");
+    printf("      =   :%%@ :-@    : :#   .=     .:     #        \n");
+    printf("     :-  *    %%#       @@@:@@  .    #      =       \n");
+    printf("     + :+   +%%.=   *@@.@@@@@@#       - :   ::      \n");
+    printf("    -.:.  *.   *  -@@@%%@@@@@@%%:@=       +   =      \n");
+    printf("    %% :  .=     + %%@@@@@@@@@@@@@@   =    -  .:     \n");
+    printf("   :-    #: *   - @@@@@@@@@@@@@@@   +    =   #     \n");
+    printf("   -:  +@@@ .:    @@@@@@@@@@@@@@@:   =#@@*:  #.    \n");
+    printf("   #:=+%%.  #*-:+@@@@@@@@@@@@@@@@@%%#+@   .@@%%@@    \n");
+    printf(" :=%%+@-#- :. ==   @@@@@+:#@@#+@@@=     =      .:   \n");
+    printf(" #@@%%  -.+=   := #*-           - .= -=  = + #*+@.  \n");
+    printf("    @*#= :-  ..    =@%%--   -- -   +.+    @   .@**  \n");
+    printf("           .  :-=+==.          =+#--=*=++-         \n");
+}
+
+
 // Print Door
 void printDoor(){
     printf("      ______\n");
@@ -192,13 +218,13 @@ void printRandomCat(){
     // Random cats
     switch (number) {
         case 1:
-            cutecat();
+            printCutecat();
             break;
         case 2:
-            grumpycat();
+            printGrumpycat();
             break;
         case 3:
-            dumbcat();
+            printDumbcat();
             break;
         default:
             printf("An error has occured when generating random cat.\n");

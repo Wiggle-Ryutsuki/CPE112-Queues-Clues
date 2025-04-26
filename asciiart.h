@@ -8,6 +8,7 @@
 void printGameOver();
 
 void printForest();
+void printCave();
 void printDoor();
 void printCity();
 

@@ -1,4 +1,4 @@
-#include "cats.h"
+#include "asciiart.h"
 
 void cutecat(){
     printf("  /\\_/\\   \n");

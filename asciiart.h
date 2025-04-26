@@ -1,5 +1,5 @@
-#ifndef CATS_H
-#define CATS_H
+#ifndef ASCIIART_H
+#define ASCIIART_H
 
 #include <stdio.h>
 #include <stdlib.h>

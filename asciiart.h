@@ -5,9 +5,20 @@
 #include <stdlib.h>
 #include <time.h>
 
-void cutecat();
-void grumpycat();
-void dumbcat();
-void randomCat();
+void printGameOver();
+
+void printForest();
+void printDoor();
+void printCity();
+
+void printHomelessMan();
+void printFarmer();
+void printBearDisappointed();
+void printBearWithHoney();
+
+void printCutecat();
+void printGrumpycat();
+void printDumbcat();
+void printRandomCat();
 
 #endif

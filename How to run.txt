@@ -1,0 +1,2 @@
+gcc .\game.c .\history.c .\world.c .\inventory.c .\asciiart.c -o Game
+./Game.exe

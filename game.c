@@ -88,7 +88,7 @@ void initializeGame(Graph *graph, Player *player)
     Location *loc0 = addLocation(graph, 0, "Your House", "Cozy, familiar, but your cat is missing! The only way out is the 'village'.");
     Location *loc1 = addLocation(graph, 1, "Village Square", "Bustling with activity. Paths lead to the 'farm', and the 'forest'.");
     Location *loc2 = addLocation(graph, 2, "Old MacDonald's Farm", "Smells like... farm. A friendly farmer is here. You can only go 'back' to the village.");
-    Location *loc3 = addLocation(graph, 3, "Forest Entrance", "Tall trees loom ominously. It looks dark. There are paths leading 'deeper' (1), towards a 'growl' (2), to a 'crossroads' (3), or 'back' to the village.");
+    Location *loc3 = addLocation(graph, 3, "Forest Entrance", "Tall trees loom ominously. It looks dark, and you hear something growling... There are paths leading 'deeper' (1), towards the 'growl' (2), to a 'crossroads' (3), or 'back' to the village.");
     Location *loc4 = addLocation(graph, 4, "Forest Dead End (Path 1)", "The path ends abruptly at a thick wall of thorns. Only way is 'back'.");
     Location *loc5 = addLocation(graph, 5, "Cave Entrance (Bear)", "A large, grumpy bear blocks the cave entrance! It seems agitated. Maybe something sweet would calm it? You can 'approach' the cave or go 'back' to the forest entrance.");
     Location *loc6 = addLocation(graph, 6, "Forest Crossroads", "Several paths diverge here. One seems 'overgrown' (1), another has 'scraps' (2), a third looks 'well-trodden' (3). You can also go 'back' towards the forest entrance.");
@@ -502,6 +502,7 @@ void useItem(Graph *graph, Player *player, char *item){                         
             printf(AnsiBrightMagenta "Hunk Ree:" AnsiColorReset " Food... oh, thank the depths... thank you... (Coughs weakly) Listen... listen close... Just ahead... the darkness plays tricks... there's a wire... low to the ground... near the right wall... almost invisible... (Takes a shaky breath) Trip it... and the ceiling comes down. Rocks... crushing... Be... careful... so careful...\n"); // Tell player that the lunch box worked
             removeItem(1);                                                              // Remove the lunch box from the inventory (it's been used)
             Inventory[1].used = 1;                                                      // Mark the item as used
+            strcpy(graph->locations[10].description, "The hungry individual is now occupied with his meal, it's best not to disturb him. Passages lead 'left' and 'right'. You can also go 'back' towards the bear cave entrance."); // Change description AGAIN
         }
         else
             printf("You don't have a " AnsiBrightRed "%s" AnsiColorReset, item); // They didn't obtain the item
@@ -579,8 +580,12 @@ void talkTo(Player *player, char *name){                                        
     Location *loc = player->currentLocation;                                            // Create a pointer to the player's location
     int choice = -1;                                                                    // Dialogue choices that the player can make
 
-    if (loc->npcId == NPC_NONE)                                                         // If there isn't an NPC present, then...
-        printf("There's no one to talk to...\n");                                       // print disclaimer
+    if (loc->npcId == NPC_NONE){                                                        // If there isn't an NPC present, then...
+        printf("There's no one to talk to...\n");                                           // print disclaimer
+        printf("\n> *sigh*");                                                               // Damn
+        getchar();                                                                          // Press Enter
+    }                                                         
+        
     
     else if (loc->npcId == NPC_FARMER && (strcasecmp(NPCs[0].name, name) == 0)){          // If farmer found, then...
         if (Inventory[0].id == -1)                                                      // If player doesn't have honey yet 
@@ -599,9 +604,19 @@ void talkTo(Player *player, char *name){                                        
             {
                 printf(AnsiColorYellow "\nGabe Itch:" AnsiColorReset " Your cat, ya say? Aww, that's a shame. Hate to see a critter lost. Hmm... you know, it's funny you mention that. Earlier this mornin', I did see a flash of fur boltin' past my field. Real quick little thing.\n");
 
+                clearInputBuffer();                                                     // Stops automatically continuing
+                printf("\n> Continue...");                                              // Little pause
+                getchar();                                                              // Press enter to continue
+
                 printf(AnsiColorYellow "\nGabe Itch:" AnsiColorReset " Couldn't get a good look, mind you, but it definitely hightailed it straight into the forest, maybe towards that old cave entrance people talk about? Might be worth checkin' out, eh?\n");
 
+                printf("\n> OK, thanks.");                                              // Little pause
+                getchar();                                                              // Press enter to continue
+
                 printf(AnsiColorYellow "\nGabe Itch:" AnsiColorReset " Tell ya what, that cave can be a bit dark and gloomy. Here...(Farmer pulls out a small jar of honey) Take this. Fresh from my hives. A little sweetness might keep your spirits up on your search. Good luck findin' your furry friend!\n\n");
+
+                printf("\n> Why thank you!");                                           // Little pause
+                getchar();                                                              // Press enter to continue
 
                 addItem(ITEM_HONEY, "Honey", "Sweet and Sticky!");                      // Obtain honey
             }
@@ -612,8 +627,12 @@ void talkTo(Player *player, char *name){                                        
             else
                 printf(AnsiColorYellow "\nGabe Itch:" AnsiColorReset " looks at you quizzically.\n");
         }
-        else
+        else{
             printf("\nThere's nothing left to talk about...\n");
+            printf("\n> Bye");
+            getchar();
+        }
+            
     }
     else if (loc->npcId == NPC_HUNGRY_PERSON && strcasecmp(NPCs[1].name, name) == 0)
     { // If hungry NPC is found then...
@@ -654,6 +673,7 @@ void talkTo(Player *player, char *name){                                        
             {
                 printf("\nHunk Ree looks at you with empty eyes, not understanding.\n");
             }
+            clearInputBuffer();
         }
         // Player doesn't have the lunchbox (or never picked it up)
         else
@@ -700,6 +720,7 @@ void talkTo(Player *player, char *name){                                        
             {
                 printf("\nThe thugs look unimpressed by your response.\n");
             }
+            clearInputBuffer();
         }
         // Player doesn't have cigarettes
         else
@@ -709,8 +730,6 @@ void talkTo(Player *player, char *name){                                        
             printf("\nThey don't seem willing to let you pass without some kind of offering.\n");
         }
     }
-    if (choice != -1)   
-        clearInputBuffer();                                                                 // \n are still here
 
     displayLocation(player);                                                                // Redisplay the location
 }

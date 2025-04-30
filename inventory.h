@@ -8,8 +8,9 @@
 
 typedef struct item {
     int id;
-    char name[20];
+    char name[25];
     char description[1000];
+    int used;
 } Item;
 
 extern Item Inventory[MAX_OBJECTS];

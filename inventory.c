@@ -8,6 +8,7 @@ void initInventory(){
     // Set everything as empty aka -1
     for(int i = 0; i < MAX_OBJECTS; i++){
         Inventory[i].id = -1;
+        Inventory[i].used = 0;
     }
 }
 
@@ -30,11 +31,10 @@ void addItem(int ID, char Name[], char Desc[]){
     strcpy(Inventory[ID].description, Desc);
 
     // Success output
-    printf("You have obtained [ %s ]!\n", Inventory[ID].name);
+    printf("You have obtained \x1b[92m[ %s ]!\x1b[0m  \n", Inventory[ID].name);
 }
 
 
-// Function that removes item from inventory
 void removeItem(int ID){
     // Error checking
     if (ID < 0 || ID >= MAX_OBJECTS || Inventory[ID].id == -1) {

@@ -711,6 +711,8 @@ void talkTo(Player *player, char *name){                                        
     }
     if (choice != -1)   
         clearInputBuffer();                                                                 // \n are still here
+
+    displayLocation(player);                                                                // Redisplay the location
 }
 
 // ♥♥♥ Helper function to trim annoying whitespaces (like newline) from end of string ♥♥♥

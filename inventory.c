@@ -31,7 +31,7 @@ void addItem(int ID, char Name[], char Desc[]){
     strcpy(Inventory[ID].description, Desc);
 
     // Success output
-    printf("You have obtained \x1b[92m[ %s! ]\x1b[0m \n", Inventory[ID].name);
+    printf("You have obtained \x1b[92m[ %s ]!\x1b[0m  \n", Inventory[ID].name);
 }
 
 

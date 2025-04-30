@@ -311,7 +311,7 @@ void lookAround(Player *player) {                                               
 
     // Display NPCs again 
     if (loc->npcId != NPC_NONE)                                                                             // If the node contains an NPC
-        printf("Someone is here: " AnsiBrightMagenta "%s" AnsiColorReset "\n", NPCs[loc->id].name);         // Display the NPC's name
+        printf("Someone is here: " AnsiBrightMagenta "%s" AnsiColorReset "\n", NPCs[loc->npcId].name);         // Display the NPC's name
 
     // Repeat exits for convenience after looking
     printf(AnsiColorCyan "Exits: " AnsiColorReset);                                     // Copy paste the same code for displaying connections

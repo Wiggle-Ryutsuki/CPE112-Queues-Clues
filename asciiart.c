@@ -193,7 +193,7 @@ void printCutecat(){
 void printGrumpycat(){
     printf(" /\\_/\\\n");
     printf("( =.= )\n");
-    printf("  ----\n");
+    printf(" -----\n");
     printf("/     \\ \n");
     printf("\\__|__/  \n");
 }

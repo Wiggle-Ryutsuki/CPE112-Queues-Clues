@@ -86,12 +86,12 @@ void initializeGame(Graph *graph, Player *player)
     // Add locations, SO CUSTOMIZABLE!!!!!
     // !REMINDER                |graph| |ID| |NAME|         |Description|!
     Location *loc0 = addLocation(graph, 0, "Your House", "Cozy, familiar, but your cat is missing! The only way out is the 'village'.");
-    Location *loc1 = addLocation(graph, 1, "Village Square", "Bustling with activity. Paths lead to the 'farm', and the 'forest'.");
+    Location *loc1 = addLocation(graph, 1, "Village Square", "Bustling with activity. Paths lead to the 'farm', and the 'forest'. Going 'back' home is also an option.");
     Location *loc2 = addLocation(graph, 2, "Old MacDonald's Farm", "Smells like... farm. A friendly farmer is here. You can only go 'back' to the village.");
-    Location *loc3 = addLocation(graph, 3, "Forest Entrance", "Tall trees loom ominously. It looks dark, and you hear something growling... There are paths leading 'deeper' (1), towards the 'growl' (2), to a 'crossroads' (3), or 'back' to the village.");
-    Location *loc4 = addLocation(graph, 4, "Forest Dead End (Path 1)", "The path ends abruptly at a thick wall of thorns. Only way is 'back'.");
+    Location *loc3 = addLocation(graph, 3, "Forest Entrance", "Tall trees loom ominously. It looks dark, and you hear something growling... There are paths leading 'deeper', towards the 'growl', to a 'crossroads' (3), or 'back' to the village.");
+    Location *loc4 = addLocation(graph, 4, "Forest Dead End", "The path ends abruptly at a thick wall of thorns. Only way is 'back'.");
     Location *loc5 = addLocation(graph, 5, "Cave Entrance (Bear)", "A large, grumpy bear blocks the cave entrance! It seems agitated. Maybe something sweet would calm it? You can 'approach' the cave or go 'back' to the forest entrance.");
-    Location *loc6 = addLocation(graph, 6, "Forest Crossroads", "Several paths diverge here. One seems 'overgrown' (1), another has 'scraps' (2), a third looks 'well-trodden' (3). You can also go 'back' towards the forest entrance.");
+    Location *loc6 = addLocation(graph, 6, "Forest Crossroads", "Several paths diverge here. One seems 'overgrown', another has 'scraps', a third looks 'well-trodden'. You can also go 'back' towards the forest entrance.");
     Location *loc7 = addLocation(graph, 7, "Forest Dead End (Overgrown Path)", "Vines and bushes block the way completely. You have to go 'back'.");
     Location *loc8 = addLocation(graph, 8, "Forest Dead End (Scraps)", "Hmm, looks like someone had lunch here recently. Hey, a discarded lunch box! Only way is 'back'.");
     Location *loc9 = addLocation(graph, 9, "Forest Dead End (Well-Trodden)", "The path ends at a steep cliff face. Too dangerous to climb. Go 'back'.");
@@ -102,7 +102,7 @@ void initializeGame(Graph *graph, Player *player)
     Location *loc13 = addLocation(graph, 13, "Caverns - Right Dead End (Glint)", "Wedged in a crack is a shiny Silver Key! You take it. Head 'back'.");
     Location *loc14 = addLocation(graph, 14, "Caverns - Right Fork", "The path continues 'right' towards another junction and 'across' towards a passage. You can go 'back' to the main chamber.");
     Location *loc15 = addLocation(graph, 15, "Caverns - Trap!", "Oh no! The clicking sound was a pressure plate! Darts shoot from the walls!"); // Game over location
-    Location *loc16 = addLocation(graph, 16, "Caverns - Crossroads", "Another junction. One path looks like a 'dead end' (1), another has a some 'rubble' (2), and the third leads to a sturdy looking 'door'. You can go 'back' to the previous fork.");
+    Location *loc16 = addLocation(graph, 16, "Caverns - Crossroads", "Another junction. One path looks like a 'dead end', another has a some 'rubble', and the third leads to a sturdy looking 'door'. You can go 'back' to the previous fork.");
     Location *loc17 = addLocation(graph, 17, "Caverns - Dead End", "Just cold, damp rock. Go 'back'.");
     Location *loc18 = addLocation(graph, 18, "Caverns - Dead End (Rusty Key)", "You find a rusty, crooked key. It doesn't look very useful. Go 'back'.");
     Location *loc19 = addLocation(graph, 19, "Caverns - Locked Door", "A heavy silver door blocks the way. It has a silver lock. You could try to 'open door', or go 'back' to the crossroads.");
@@ -112,7 +112,7 @@ void initializeGame(Graph *graph, Player *player)
     Location *loc22 = addLocation(graph, 22, "Underground City - Road Fork", "The main road splits here. Going 'right' leads towards a residential area. Going 'left' heads towards what looks like a storefront. You can go 'back' to the plaza.");
     Location *loc23 = addLocation(graph, 23, "Underground City - Your Cat!", "There it is! Your furry friend is safe and sound, purring on a windowsill! YOU WIN!"); // WIN!
     Location *loc24 = addLocation(graph, 24, "Underground City - Storefront", "A small, dimly lit store. You could 'enter store' or check the 'back alley'. Or go 'back' to the road fork.");
-    Location *loc25 = addLocation(graph, 25, "Underground City - Inside Store", "Dusty shelves line the walls. The shopkeeper offers various goods, including cigarettes. You can 'buy cigarettes' or 'leave store'.");
+    Location *loc25 = addLocation(graph, 25, "Underground City - Inside Store", "Dusty shelves line the walls. The shopkeeper offers various goods, including cigarettes. You can 'buy cigarettes' or go 'back' to leave the store.");
     Location *loc26 = addLocation(graph, 26, "Underground City - Back of Store", "It's dark back here. Suddenly, someone steps out of the shadows! It's a drug dealer!"); // Game over location
 
     // Check for failures, if found then REVIEW YOUR CODE!!!!
@@ -234,7 +234,7 @@ void displayLocation(Player *player) {                                          
     printf(AnsiColorCyan "Exits: " AnsiColorReset);                                     // Display all paths the player can take
     LocationNode *conn = loc->connections;                                              // Create a pointer to point at the start of the linked list of edges (connections)
     if (!conn)                                                                          // If an edge (connection) doesn't exist, then...
-        printf("None");                                                                     // Inform the player
+        printf("Back");                                                                     // Inform the player
     else {                                                                              // Display all possible paths/edges/connections to player
         int first = 1;                                                                  // Print ", " only once after an initial print
         while (conn != NULL) {                                                          // Print all the edges (connections) until none are left
@@ -282,10 +282,16 @@ void lookAround(Player *player) {                                               
     }
     else if (loc->id == 21 && loc->npcId == NPC_THUGS)                                                      // Alleyway Thugs
     {
-        if (loc->lookCount == 1)                                                                            // Looking around for a second time
-            printf("These thugs don't look friendly. They seem to want something.\n");                      // Give a hint
-        else if (loc->lookCount >= 2)                                                                       // Looking around for a third time
-            printf("One of them keeps glancing at an empty pack of cigarettes on the floor. Maybe that's what they're after?\n"); // Give a more obvious hint
+        if (Inventory[4].used == 1 && loc->lookCount >= 1)                                                  // Used cigarettes already                
+            printf("The thugs are pleased with their carcinogens... it's safe to pass through now.\n");
+        else
+        {
+            if (loc->lookCount == 1)                                                                            // Looking around for a second time
+                printf("These thugs don't look friendly. They seem to want something.\n");                      // Give a hint
+            else if (loc->lookCount >= 2)                                                                       // Looking around for a third time
+                printf("One of them keeps glancing at an empty pack of cigarettes on the floor. Maybe that's what they're after?\n"); // Give a more obvious hint
+        }      
+        
     }
     else if (loc->id == 22)                                                                                 // Road fork before Store/Cat
     {   
@@ -411,8 +417,10 @@ void movePlayer(Graph *graph, Player *player, char *direction){                 
 
     // Post-Move Actions (Pick up item automatically)
     // Basically, if the player is at a node that contains an item AND they don't have the item in their inventory AND they never used the item, then...
-    if (player->currentLocation->id == 8 && Inventory[1].id == -1 && Inventory[1].used == 0) 
+    if (player->currentLocation->id == 8 && Inventory[1].id == -1 && Inventory[1].used == 0){
         addItem(ITEM_LUNCHBOX, "Lunch Box", "Looking inside, it contains dry stale crackers, some shrivled up turkey slices, moldy cheese, a sports drink, and a tiny chocolate bar");
+        strcpy(graph->locations[8].description, "The lunchbox was here, sadly no more appeared...");
+    }
 
     else if (player->currentLocation->id == 13 && Inventory[2].id == -1 && Inventory[2].used == 0)
         addItem(ITEM_SILVER_KEY, "Silver Key", "Can be used on silver locks");
@@ -840,7 +848,13 @@ int main() {                                                                    
     printf("Time played: %.0f seconds.\n", timeSpent);                                                              // Display the time spent
     
     // Display final score based on move count
-    printf("Total moves made (Score): %d\n", player.moveCount);                                                     // Display Final Score
+    if (player.moveCount <= 20) printf("Rank: " AnsiBrightGreen "A!" AnsiColorReset);                               // A Rank!
+    else if (player.moveCount <= 25) printf("Rank: " AnsiBrightCyan "B!" AnsiColorReset);                           // B Rank
+    else if (player.moveCount <= 30) printf("Rank: " AnsiBrightYellow "C" AnsiColorReset);                          // C Rank
+    else if (player.moveCount > 30)  printf("Rank: " AnsiColorBlue "D..." AnsiColorReset);                          // D Rank...
+    puts("");                                                                                                       // New Line Rank !!!!!!!!!
+        
+    printf("Total moves made: %d\n", player.moveCount);                                                             // Display Final Score
 
     // ----------------
     // --- Clean up ---

@@ -31,7 +31,7 @@ void addItem(int ID, char Name[], char Desc[]){
     strcpy(Inventory[ID].description, Desc);
 
     // Success output
-    printf("You have obtained \x1b[92m[ %s ]!\x1b[0m  \n", Inventory[ID].name);
+    printf("You have obtained \x1b[92m[ %s ] !\x1b[0m  \n", Inventory[ID].name);
 }
 
 
@@ -49,20 +49,102 @@ void removeItem(int ID){
 }
 
 
-// Function that shows inventory (obtained items only)
 void printInventory(){
-    // Print headers
-    printf("===================================================\n");
-    printf("                     INVENTORY                     \n");
-    printf("===================================================\n");
-    printf("| Name       | Description                        |\n");
-    printf("|------------+------------------------------------|\n");
+    int maxWIDTH = 91;
+    int maxNameLen = 4; // To at least fit "Name" for header.
+    int maxDescLen = 11; // To at least fit "Description" for header.
+    for (int i = 0; i < MAX_OBJECTS; i++){
+        int nLen = strlen(Inventory[i].name);
+        int dLen = strlen(Inventory[i].description);
 
-    // Print name and description
-    for(int i = 0; i < MAX_OBJECTS; i++){
-        if (Inventory[i].id != -1){
-            printf("| %-10s | %-34s |\n", Inventory[i].name, Inventory[i].description);
+        if (nLen > maxNameLen) {
+            maxNameLen = nLen;
+        }
+        if (dLen > maxDescLen) {
+            maxDescLen = dLen;
         }
     }
-    printf("===================================================\n\n");
+
+    int totalWidth = maxNameLen + maxDescLen + 7;
+
+    // Printing title and headers
+    if (totalWidth <= maxWIDTH){
+        for (int i = 0; i < totalWidth; i++){
+            printf("=");
+        } printf("\n");
+
+        int padding = (totalWidth - 9) / 2;
+        for (int i = 0; i < padding; i++){
+            printf(" ");
+        } printf("INVENTORY\n");
+
+        for (int i = 0; i < totalWidth; i++){
+            printf("=");
+        } printf("\n");
+
+        // Printing headings
+        printf("| %-*s | %-*s |\n", maxNameLen, "Name", maxDescLen, "Description");
+
+        // Printing separators
+        printf("|");
+        for (int i = 0; i < maxNameLen + 2; i++) {
+            printf("-");
+        }
+        printf("+");
+        for (int i = 0; i < maxDescLen + 2; i++) {
+            printf("-");
+        } 
+        printf("|\n");
+    } else {
+        maxDescLen = maxWIDTH - maxNameLen - 7;
+        totalWidth = maxWIDTH;
+
+        for (int i = 0; i < totalWidth; i++){
+            printf("=");
+        } printf("\n");
+    
+        int padding = (totalWidth - 9) / 2;
+        for (int i = 0; i < padding; i++){
+            printf(" ");
+        } printf("INVENTORY\n");
+    
+        for (int i = 0; i < totalWidth; i++){
+            printf("=");
+        } printf("\n");
+    
+        // Printing headings
+        printf("| %-*s | %-*s |\n", maxNameLen, "Name", maxDescLen, "Description");
+    
+        // Printing separators
+        printf("|");
+        for (int i = 0; i < maxNameLen + 2; i++) {
+            printf("-");
+        }
+        printf("+");
+        for (int i = 0; i < maxDescLen + 2; i++) {
+            printf("-");
+        } 
+        printf("|\n");
+    }
+
+    for (int i = 0; i < MAX_OBJECTS; i++) {
+        if (Inventory[i].id != -1) {
+            char desc = Inventory[i].description;
+            int descLen = strlen(desc);
+            int printed = 0;
+    
+            printf("| %-*s | %-*.*s |\n", maxNameLen, Inventory[i].name, maxDescLen, maxDescLen, desc);
+            printed += maxDescLen;
+    
+            while (printed < descLen) {
+                printf("| %-*s |%-*.*s  |\n", maxNameLen, "", maxDescLen, maxDescLen, desc + printed);
+                printed += maxDescLen;
+            }
+        }
+    }
+
+    //Print bottom border
+    for (int i = 0; i < totalWidth; i++) {
+        printf("=");
+    } printf("\n\n");
 }

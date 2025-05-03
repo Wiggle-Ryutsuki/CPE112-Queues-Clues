@@ -4,14 +4,15 @@
 #include <string.h>         // For string copy and compare
 #include <strings.h>        // For strcasecmp (case-insensitive compare)
 #include <time.h>           // For the time score later
+#include <windows.h>        // WHY DOESN'T WINDOWS KNOW WHAT UTF-8 ISSSSSSSSSSSSSSSSSSsss >:((((
 #include "inventory.h"      // The inventory system
 #include "world.h"          // The graph
 #include "history.h"        // The stack
 #include "asciiart.h"       // The ASCII art
+#include "hashtable.h"      // The hash table
 
 // ANSI Color Codes
 // For more Finesse
-// Just Realized that this doesn't work on Window's cmd :((((((((((((((((((
 #define AnsiColorReset "\x1b[0m"    // Reset
 #define AnsiBold "\x1b[1m"          // Bold/Bright text
 #define AnsiColorBlack "\x1b[30m"   // Black
@@ -50,20 +51,6 @@ typedef struct NPC
 // Lazy global array
 NPC NPCs[3];                // List of NPCs
 
-// Item IDs
-#define ITEM_NONE -1        // -1 means nothing
-#define ITEM_HONEY 0        // 0 means Honey
-#define ITEM_LUNCHBOX 1     // 1 means Lunch box
-#define ITEM_SILVER_KEY 2   // 2 means Silver key
-#define ITEM_RUSTY_KEY 3    // 3 means Rusty key
-#define ITEM_CIGARETTES 4   // 4 means Cigarettes
-
-// NPC IDs 
-#define NPC_NONE -1         // -1 still means nothing
-#define NPC_FARMER 0        // 0 means farmer
-#define NPC_HUNGRY_PERSON 1 // 1 means hungry NPC
-#define NPC_THUGS 2         // 2 means Thugs
-
 // Function Prototypes
 // Game functions
 void initializeGame(Graph *graph, Player *player);                      // Create the game world
@@ -83,6 +70,12 @@ void clearInputBuffer();                                                // Helpe
 // Function to start the game
 void initializeGame(Graph *graph, Player *player)
 { // Arguments are the graph (game world) and the player
+
+    // Initialize the hash tables
+    initLocationHashTable();        // The locations
+    initItemHashTable();            // the Items
+    initNPCHashTable();             // the NPCs
+
     // Add locations, SO CUSTOMIZABLE!!!!!
     // !REMINDER                |graph| |ID| |NAME|         |Description|!
     Location *loc0 = addLocation(graph, 0, "Your House", "Cozy, familiar, but your cat is missing! The only way out is the 'village'.");
@@ -122,8 +115,50 @@ void initializeGame(Graph *graph, Player *player)
     {
         printf("FATAL: Failed to create one or more locations during initialization. Exiting.\n");
         freeGraph(graph); // Attempt cleanup
+        freeLocationHashTable();
+        freeItemHashTable();
+        freeNPCHashTable();
         exit(EXIT_FAILURE); // Found a function that quits the program, lets goooo
     }
+
+    // Populate Location Hash Table
+    // Add all locations to the hash table right after creation or here
+    insertLocation(loc0->name, loc0);
+    insertLocation(loc1->name, loc1);
+    insertLocation(loc2->name, loc2);
+    insertLocation(loc3->name, loc3);
+    insertLocation(loc4->name, loc4);
+    insertLocation(loc5->name, loc5);
+    insertLocation("Bear", loc5);                       // Where the bear is
+    insertLocation(loc6->name, loc6);
+    insertLocation(loc7->name, loc7);
+    insertLocation(loc8->name, loc8);
+    insertLocation("Lunch Box Item", loc8);             // where the lunchbox is
+    insertLocation(loc9->name, loc9);
+    insertLocation(loc10->name, loc10); 
+    insertLocation("Cave", loc10);                      // Where the cave is
+    insertLocation(loc11->name, loc11);
+    insertLocation(loc12->name, loc12);
+    insertLocation(loc13->name, loc13);
+    insertLocation("Silver Key Item", loc13);           // Where the silver key is
+    insertLocation(loc14->name, loc14);
+    insertLocation(loc15->name, loc15);
+    insertLocation(loc16->name, loc16);
+    insertLocation(loc17->name, loc17);
+    insertLocation(loc18->name, loc18);
+    insertLocation("Rusty Key Item", loc18);            // Where the rusty key is
+    insertLocation(loc19->name, loc19);
+    insertLocation("Silver Door", loc19);               // Where to use the silver key
+    insertLocation(loc20->name, loc20);
+    insertLocation(loc21->name, loc21);
+    insertLocation("Thugs", loc21);                     // Where the thugs are
+    insertLocation(loc22->name, loc22);
+    insertLocation(loc23->name, loc23);
+    insertLocation("Cat", loc23);                       // Where the cat is
+    insertLocation(loc24->name, loc24);
+    insertLocation(loc25->name, loc25);
+    insertLocation("Cigs Key Item", loc25);             // Where the cigarettes are
+    insertLocation(loc26->name, loc26);
 
     // Add Connections (Map the Paths) 
     // !REMINDER |from||to||direction's name||edge cost)!
@@ -186,15 +221,15 @@ void initializeGame(Graph *graph, Player *player)
     addConnection(loc24, loc26, "back alley", 2);                       // Edge (connection) from the store front to the back alley
 
     // Set Location Properties (NPCs, Items, Flags) 
-    loc2->npcId = NPC_FARMER;           // The farmer NPC
+    loc2->npcId = 0;                    // The farmer NPC
 
     loc10->leadsToGameOver = 1;         // Bears are deadly
 
-    loc10->npcId = NPC_HUNGRY_PERSON;   // Hungry person here
+    loc10->npcId = 1;                   // Hungry person here
 
     loc15->leadsToGameOver = 1;         // Trap is game over
 
-    loc21->npcId = NPC_THUGS;           // Thugs here (special interaction)
+    loc21->npcId = 2;                   // Thugs here (special interaction)
 
     loc23->isGoal = 1;                  // Finding the cat is the goal!
 
@@ -209,15 +244,31 @@ void initializeGame(Graph *graph, Player *player)
     // Initialize Inventory
     initInventory();
 
+    // Populate Item Hash Table
+    // These represent potential items in the game the player *could* find
+    insertItem("Honey", 0);
+    insertItem("Lunch Box", 1);
+    insertItem("Silver Key", 2);
+    insertItem("Rusty Key", 3);
+    insertItem("Rusty Crooked Key", 3); // Alias
+    insertItem("Cigarettes", 4);
+    insertItem("Cigs", 4);              // Alias
+
     // Initialize NPCs
-    NPCs[0].id = NPC_FARMER;            // The farmer
+    NPCs[0].id = 0;                     // The farmer
     strcpy(NPCs[0].name, "Gabe Itch");  // Innocent name
+    insertNPC(NPCs[0].name, 0);         // Add to hash table
+    insertNPC("Farmer", 0);             // Alias
 
-    NPCs[1].id = NPC_HUNGRY_PERSON;     // The hungry NPC
+    NPCs[1].id = 1;                     // The hungry NPC
     strcpy(NPCs[1].name, "Hunk Ree");   // Totally random name
+    insertNPC(NPCs[1].name, 1);         // Add to hash table
+    insertNPC("Hungry NPC", 1);         // Alias
 
-    NPCs[2].id = NPC_THUGS;             // The thugs
+    NPCs[2].id = 2;                     // The thugs
     strcpy(NPCs[2].name, "Thugs");      // AI generated name
+    insertNPC(NPCs[2].name, 2);         // Add to the hash table
+    insertNPC("Thug Leader", 2);        // Alias
 }
 
 // Function that displays the location (Current node player is in) of the player
@@ -228,7 +279,7 @@ void displayLocation(Player *player) {                                          
     printf(AnsiBold AnsiBrightYellow"\n---  %s  ---\n"AnsiColorReset, loc->name);       // Display the location's name to the player
     printf("%s\n", loc->description);                                                   // Display the locations's desctiption to the player
 
-    if (loc->npcId != NPC_NONE)                                                         // If there is an NPC present, then...
+    if (loc->npcId != -1)                                                               // If there is an NPC present, then...
         printf("Someone is here: [" AnsiBrightMagenta "%s" AnsiColorReset "]\n", NPCs[loc->npcId].name); // Display name of NPC
 
     printf(AnsiColorCyan "Exits: " AnsiColorReset);                                     // Display all paths the player can take
@@ -267,7 +318,7 @@ void lookAround(Player *player) {                                               
             printf("Maybe if you had something to appease the bear?\n");                                    // Give a more obvious hint
         } 
     else if (loc->id == 14) {                                                                               // Right fork before trap
-        if (Inventory[1].used == 1)                                                                         // If lunchbox was used
+        if (Inventory[lookupItem("Lunch Box")].used == 1)                                                   // If lunchbox was used
         {
             if (loc->lookCount >= 1)                                                                        // Looking around for a second time
                 printf("You remember the warning about a trap nearby. Going 'across' feels dangerous.\n");  // Give a hint (it's obvious enough)
@@ -280,9 +331,9 @@ void lookAround(Player *player) {                                               
         else if (loc->lookCount >= 2)                                                                       // Looking around for a third time
             printf("The lock shines faintly, it looks like silver.\n");                                     // Give a more obvious hint
     }
-    else if (loc->id == 21 && loc->npcId == NPC_THUGS)                                                      // Alleyway Thugs
+    else if (loc->id == 21 && loc->npcId == lookupNPC("Thugs"))                                             // Alleyway Thugs
     {
-        if (Inventory[4].used == 1 && loc->lookCount >= 1)                                                  // Used cigarettes already                
+        if (Inventory[lookupItem("Cigs")].used == 1 && loc->lookCount >= 1)                                                  // Used cigarettes already                
             printf("The thugs are pleased with their carcinogens... it's safe to pass through now.\n");
         else
         {
@@ -316,7 +367,7 @@ void lookAround(Player *player) {                                               
     printf(AnsiColorReset);                                                                                 // Reset color after hints
 
     // Display NPCs again 
-    if (loc->npcId != NPC_NONE)                                                                             // If the node contains an NPC
+    if (loc->npcId != -1)                                                                             // If the node contains an NPC
         printf("Someone is here: " AnsiBrightMagenta "%s" AnsiColorReset "\n", NPCs[loc->npcId].name);         // Display the NPC's name
 
     // Repeat exits for convenience after looking
@@ -417,27 +468,27 @@ void movePlayer(Graph *graph, Player *player, char *direction){                 
 
     // Post-Move Actions (Pick up item automatically)
     // Basically, if the player is at a node that contains an item AND they don't have the item in their inventory AND they never used the item, then...
-    if (player->currentLocation->id == 8 && Inventory[1].id == -1 && Inventory[1].used == 0){
-        addItem(ITEM_LUNCHBOX, "Lunch Box", "Looking inside, it contains dry stale crackers, some shrivled up turkey slices, moldy cheese, a sports drink, and a tiny chocolate bar");
-        strcpy(graph->locations[8].description, "The lunchbox was here, sadly no more appeared...");
+    if (player->currentLocation->id == 8 && Inventory[lookupItem("Lunch Box")].id == -1 && Inventory[lookupItem("Lunch Box")].used == 0){
+        addItem(lookupItem("Lunch Box"), "Lunch Box", "Looking inside, it contains dry stale crackers, some shrivled up turkey slices, moldy cheese, a sports drink, and a tiny chocolate bar");
+        strcpy(lookupLocation("Lunch Box Item")->description, "The lunchbox was here, sadly no more appeared...");
     }
 
-    else if (player->currentLocation->id == 13 && Inventory[2].id == -1 && Inventory[2].used == 0)
-        addItem(ITEM_SILVER_KEY, "Silver Key", "Can be used on silver locks");
+    else if (player->currentLocation->id == 13 && Inventory[lookupItem("Silver Key")].id == -1 && Inventory[lookupItem("Silver Key")].used == 0)
+        addItem(lookupItem("Silver Key"), "Silver Key", "Can be used on silver locks");
 
-    else if (player->currentLocation->id == 18 && Inventory[3].id == -1 && Inventory[3].used == 0)
-        addItem(ITEM_RUSTY_KEY, "Rusty Crooked Key", "It looks really fragile");
+    else if (player->currentLocation->id == 18 && Inventory[lookupItem("Rusty Key")].id == -1 && Inventory[lookupItem("Rusty Key")].used == 0)
+        addItem(lookupItem("Rusty Key"), "Rusty Crooked Key", "It looks really fragile");
 
-    else if (player->currentLocation->id == 25 && strcasecmp(direction, "buy cigarettes") == 0 && Inventory[4].used == 0)
-        addItem(ITEM_CIGARETTES, "A pack of cigarettes", "Warning: Cigarettes may cause but are not limited to lung cancer, throat cancer, mouth cancer, tongue rot, bad breath, premature aging, yellow teeth, coughing fits, raspy voice, wheezing, shortness of breath, chronic bronchitis, emphysema, heart disease, stroke, erectile dysfunction, fertility issues, spontaneous coughing in complete silence, early death, really early death, financial ruin, bad dates, loneliness, ash-covered everything, fire hazards, cold weather smoking shame, secondhand smoke guilt, thirdhand smoke mystery, social segregation, accidental hole-burning in car seats, questionable life choices, addiction stronger than your willpower, the smell of regret in your hair, morning-after lung regret, and the gradual realization that you've been paying to slowly self-destruct in style. Please light responsibly. Or, you know... not at all.");
+    else if (player->currentLocation->id == 25 && strcasecmp(direction, "buy cigarettes") == 0 && Inventory[lookupItem("Cigs")].used == 0)
+        addItem(lookupItem("Cigarettes"), "A pack of cigarettes", "Warning: Cigarettes may cause but are not limited to lung cancer, throat cancer, mouth cancer, tongue rot, bad breath, premature aging, yellow teeth, coughing fits, raspy voice, wheezing, shortness of breath, chronic bronchitis, emphysema, heart disease, stroke, erectile dysfunction, fertility issues, spontaneous coughing in complete silence, early death, really early death, financial ruin, bad dates, loneliness, ash-covered everything, fire hazards, cold weather smoking shame, secondhand smoke guilt, thirdhand smoke mystery, social segregation, accidental hole-burning in car seats, questionable life choices, addiction stronger than your willpower, the smell of regret in your hair, morning-after lung regret, and the gradual realization that you've been paying to slowly self-destruct in style. Please light responsibly. Or, you know... not at all.");
 
     // Check if player is at thugs ally
     if (player->currentLocation->id == 21 && player->metThugs == 0){                    // Hasn't met thugs yet AND is on the node with thugs
         player->metThugs = 1;                                                           // Now player has met the thugs
-        graph->locations[19].leadsToGameOver = 1;                                       // Going back angers the thugs
-        strcpy(graph->locations[19].description, "You tried to escape the thugs...");   // Game over text
-        graph->locations[23].leadsToGameOver = 1;                                       // same ^^
-        strcpy(graph->locations[23].description, "You tried to escape the thugs...");   // same ^^
+        lookupLocation("Silver Door")->leadsToGameOver = 1;                             // Going back angers the thugs
+        strcpy(lookupLocation("Silver Door")->description, "You tried to escape the thugs...");   // Game over text
+        lookupLocation("Cat")->leadsToGameOver = 1;                                       // same ^^
+        strcpy(lookupLocation("Cat")->description, "You tried to escape the thugs...");   // same ^^
     }
 }
 
@@ -483,16 +534,16 @@ void useItem(Graph *graph, Player *player, char *item){                         
     // Bear cave
     if (currentLoc->id == 5 && strcasecmp(item, "honey") == 0)                          // If player is at the bear cave AND they want to use the honey, then...
     {
-        if (Inventory[0].id == ITEM_HONEY)                                              // Check if the player actually has honey, if they do, then ...
+        if (Inventory[lookupItem("Honey")].id == lookupItem("Honey"))                   // Check if the player actually has honey, if they do, then ...
         {
             printf("You offer the " AnsiColorGreen "honey" AnsiColorReset ". The bear sniffs it, takes it gently, and seems calmer, letting you pass.\n"); // Tell player that the honey worked
             removeItem(0);                                                              // Remove the honey from the inventory (it's been used)
             Inventory[0].used = 1;                                                      // Mark the item as used
-            strcpy(graph->locations[5].description, "The bear is now preoccupied with the honey, you can now 'enter' the cave, or go 'back' to the forest entrance");                                                   // Change Description
-            strcpy(graph->locations[5].connections->directionName, "enter");            // Change direction name
-            graph->locations[10].leadsToGameOver = 0;                                   // Bear won't kill anymore
-            strcpy(graph->locations[10].name, "Caverns - Main Chamber");                // Replace with correct name
-            strcpy(graph->locations[10].description, "Dark and damp. Water drips somewhere nearby. A figure huddles in the corner, looking hungry. Passages lead 'left' and 'right'. You can also go 'back' towards the bear cave entrance."); // Replace with correct Description
+            strcpy(lookupLocation("Bear")->description, "The bear is now preoccupied with the honey, you can now 'enter' the cave, or go 'back' to the forest entrance");                                                   // Change Description
+            strcpy(lookupLocation("Bear")->connections->directionName, "enter");            // Change direction name
+            lookupLocation("Cave")->leadsToGameOver = 0;                                   // Bear won't kill anymore
+            strcpy(lookupLocation("Cave")->name, "Caverns - Main Chamber");                // Replace with correct name
+            strcpy(lookupLocation("Cave")->description, "Dark and damp. Water drips somewhere nearby. A figure huddles in the corner, looking hungry. Passages lead 'left' and 'right'. You can also go 'back' towards the bear cave entrance."); // Replace with correct Description
             player->clearanceLevel++;                                                   // Player can now go to nodes with a cost of 2
             printBearWithHoney();                                                       // Show happy Bear
         }
@@ -502,57 +553,63 @@ void useItem(Graph *graph, Player *player, char *item){                         
     // Hungry NPC
     else if (currentLoc->id == 10 && strcasecmp(item, "lunch box") == 0)                // If player is at the hungry NPC AND they want to use the lunch box, then...
     {
-        if (Inventory[1].id == ITEM_LUNCHBOX)                                           // Check if the player actually has the lunch box, if they do, then ...
+        if (Inventory[lookupItem("Lunch Box")].id == lookupItem("Lunch Box"))           // Check if the player actually has the lunch box, if they do, then ...
         {
             printf(AnsiBrightMagenta "Hunk Ree:" AnsiColorReset " Food... oh, thank the depths... thank you... (Coughs weakly) Listen... listen close... Just ahead... the darkness plays tricks... there's a wire... low to the ground... near the right wall... almost invisible... (Takes a shaky breath) Trip it... and the ceiling comes down. Rocks... crushing... Be... careful... so careful...\n"); // Tell player that the lunch box worked
+            printf("\n> Thank you");                                                    // Small pause
+            getchar();                                                                  // Press enter to continue
             removeItem(1);                                                              // Remove the lunch box from the inventory (it's been used)
             Inventory[1].used = 1;                                                      // Mark the item as used
-            strcpy(graph->locations[10].description, "The hungry individual is now occupied with his meal, it's best not to disturb him. Passages lead 'left' and 'right'. You can also go 'back' towards the bear cave entrance."); // Change description AGAIN
+            strcpy(lookupLocation("Cave")->description, "The hungry individual is now occupied with his meal, it's best not to disturb him. Passages lead 'left' and 'right'. You can also go 'back' towards the bear cave entrance."); // Change description AGAIN
         }
         else
-            printf("You don't have a " AnsiBrightRed "%s" AnsiColorReset, item); // They didn't obtain the item
+            printf("You don't have a " AnsiBrightRed "%s" AnsiColorReset, item);        // They didn't obtain the item
     }
     // Locked Door
     else if (currentLoc->id == 19 && strcasecmp(item, "silver key") == 0)               // If player is at the door AND they want to use the silver key, then...
     {
-        if (Inventory[2].id == ITEM_SILVER_KEY)                                         // Check if the player actually has the silver key, if they do, then ...
+        if (Inventory[lookupItem("Silver Key")].id == lookupItem("Silver Key"))         // Check if the player actually has the silver key, if they do, then ...
         {
-            printf("You insert the " AnsiBrightGreen "Silver Key" AnsiColorReset ". *Click!* The heavy door swings open.\n"); // Tell player that the silver key worked
-            strcpy(graph->locations[19].description, "The silver door is unlocked now, what waits on the other side? You could 'open door' if you're brave enough");
+            printf("\nYou insert the " AnsiBrightGreen "Silver Key" AnsiColorReset ". *Click!* The heavy door swings open.\n"); // Tell player that the silver key worked
+            printf("\n> Yes!");                                                         // Little pause
+            getchar();                                                                  // Press enter to continue
+            strcpy(lookupLocation("Silver Door")->description, "The silver door is unlocked now, what waits on the other side? You could 'open door' if you're brave enough");
             removeItem(2);                                                              // Remove the silver key from the inventory (it's been used)
             Inventory[2].used = 1;                                                      // Mark the item as used
             player->clearanceLevel++;                                                   // Player can now go to nodes with a cost of 3
         }
         else
-            printf("You don't have a " AnsiBrightRed "%s" AnsiColorReset, item); // They didn't obtain the item
+            printf("You don't have a " AnsiBrightRed "%s" AnsiColorReset, item);        // They didn't obtain the item
     }
     // Locked Door ( with false key)
     else if (currentLoc->id == 19 && strcasecmp(item, "Rusty Key") == 0)                // If player is at the door AND they want to use the Rusty Key, then...
     {
-        if (Inventory[3].id == ITEM_RUSTY_KEY)                                          // Check if the player actually has the Rusty Key, if they do, then ...
+        if (Inventory[lookupItem("Rusty Key")].id == lookupItem("Rusty Key"))           // Check if the player actually has the Rusty Key, if they do, then ...
         {
-            printf("You insert the " AnsiBrightGreen "Rusty key" AnsiColorReset "... But it broke while you turned it...\n"); // Tell player that the Rusty Key failed
+            printf("\nYou insert the " AnsiBrightGreen "Rusty key" AnsiColorReset "... But it broke while you turned it...\n"); // Tell player that the Rusty Key failed
+            printf("\n> Darn!");                                                        // Little pause
+            getchar();                                                                  // Press enter to continue
             removeItem(3);                                                              // Remove the Rusty Key from the inventory (it's been used)
             Inventory[3].used = 1;                                                      // Mark the item as used
         }
         else
-            printf("You don't have a " AnsiBrightRed "%s" AnsiColorReset, item); // They didn't obtain the item
+            printf("You don't have a " AnsiBrightRed "%s" AnsiColorReset, item);        // They didn't obtain the item
     }
     // Thugs
     else if (currentLoc->id == 21 && (strcasecmp(item, "Cigarettes") == 0 || strcasecmp(item, "Cigs") == 0)) // If player is with the thugs AND they want to use the cigarettes, then...
     {
-        if (Inventory[4].id == ITEM_CIGARETTES)                                         // Check if the player actually has the cigarettes, if they do, then ...
+        if (Inventory[lookupItem("Cigs")].id == lookupItem("Cigs"))                     // Check if the player actually has the cigarettes, if they do, then ...
         {
             printf(AnsiBrightMagenta "Thugs: " AnsiColorReset "Huh, you actually got some? Give it here! You can 'leave' now.\n"); // Wink Wink Nudge Nudge
             printf("You offer the " AnsiBrightGreen "cigarettes" AnsiColorReset ". They take them with a grunt and let you pass.\n"); // Tell player that the cigarettes worked
             removeItem(4);                                                              // Remove the cigarettes from the inventory (it's been used)
             Inventory[4].used = 1;                                                      // Mark the item as used
             player->clearanceLevel = 2;                                                 // Player can now go to more places
-            graph->locations[19].leadsToGameOver = 0;                                   // You're safe now
-            strcpy(graph->locations[19].description, "The silver door is unlocked now, what waits on the other side? You could 'open door' if you're brave enough");                                                                   // Revert description change
-            graph->locations[23].leadsToGameOver = 0;                                     // same ^^
-            strcpy(graph->locations[23].description, "There it is! Your furry friend is safe and sound, purring on a windowsill! YOU WIN!"); // same ^^
-            strcpy(graph->locations[21].description, "The thugs have let you go! You see something furry in the distance, you can 'leave' to find out what it is");
+            lookupLocation("Silver Door")->leadsToGameOver = 0;                                   // You're safe now
+            strcpy(lookupLocation("Silver Door")->description, "The silver door is unlocked now, what waits on the other side? You could 'open door' if you're brave enough");                                                                   // Revert description change
+            lookupLocation("Cat")->leadsToGameOver = 0;                                     // same ^^
+            strcpy(lookupLocation("Cat")->description, "There it is! Your furry friend is safe and sound, purring on a windowsill! YOU WIN!"); // same ^^
+            strcpy(lookupLocation("Thugs")->description, "The thugs have let you go! You see something furry in the distance, you can 'leave' to find out what it is");
         }
         else
             printf("You don't have a " AnsiBrightRed "%s" AnsiColorReset, item); // They didn't obtain the item
@@ -569,14 +626,14 @@ void displayInstructions(){                                                     
     printf(AnsiBold AnsiColorCyan"\n--- Instructions ---\n"AnsiColorReset);                             // Sweet little UI for the menu of instructions
     printf("Objective: Explore the world and find your lost furry friend.\n");                          // Nice and simple Objective
     printf(AnsiBold "Commands:\n" AnsiColorReset);                                                      // Tell the user how to use commands
-    printf(" \nMovement: Enter a direction shown in [" AnsiColorGreen "brackets" AnsiColorReset "] (e.g., '" AnsiColorGreen "village" AnsiColorReset "', '" AnsiColorGreen "left" AnsiColorReset "') to move.\n");                                                                  // Explain movement first
-    printf("        Enter '" AnsiColorYellow "back" AnsiColorReset "' to return to the previous location you visited.\n");                                                                                                    // Explain back tracking
-    printf(" \nLook: Type '" AnsiColorYellow "look" AnsiColorReset "' to examine your current surroundings more closely for hints.\n");                                                                                               // Explain the look around system, it's just asking for hints
-    printf(" \nInventory: Type '" AnsiColorYellow "inv" AnsiColorReset "' or '" AnsiColorYellow "inventory" AnsiColorReset "' to see your items.\n");                                                                                               // Explain the inventory system
-    printf("        Use [item]: Type '" AnsiColorYellow "use" AnsiColorReset "' followed by an item name (e.g., '" AnsiColorYellow "use " AnsiColorMagenta "honey" AnsiColorReset "').\n");                                                                            // Explain how to use items
-    printf(" \nTalk: Type '" AnsiColorYellow "talk to" AnsiColorReset "' followed by an NPC name (e.g., '" AnsiColorYellow "talk to " AnsiColorYellow "John Pork" AnsiColorReset "').\n");                                                                                           // Explain how to talk
-    printf(" \nInstructions: Type '" AnsiColorYellow "help" AnsiColorReset "' or '" AnsiColorYellow "instructions" AnsiColorReset "' to see this message again.\n");                                                                                               // Explain how to open the instructions menu again
-    printf(" \nQuit: Type '" AnsiColorYellow "quit" AnsiColorReset "' to exit the game.\n");            // Explain how to win the game
+    printf("\n👟 Movement: Enter a direction shown in [" AnsiColorGreen "brackets" AnsiColorReset "] (e.g., '" AnsiColorGreen "village" AnsiColorReset "', '" AnsiColorGreen "left" AnsiColorReset "') to move.\n");                                                                  // Explain movement first
+    printf("\n      -> Enter '" AnsiColorYellow "back" AnsiColorReset "' to return to the previous location you visited.\n");                                              // Explain back tracking
+    printf("\n👀 Look: Type '" AnsiColorYellow "look" AnsiColorReset "' to examine your current surroundings more closely for hints.\n");                                                                                               // Explain the look around system, it's just asking for hints
+    printf(" \n🎒 Inventory: Type '" AnsiColorYellow "inv" AnsiColorReset "' or '" AnsiColorYellow "inventory" AnsiColorReset "' to see your items.\n");                                                                                               // Explain the inventory system
+    printf("\n      -> Use ["  AnsiColorGreen "item" AnsiColorReset "]: Type '" AnsiColorYellow "use" AnsiColorReset "' followed by an "  AnsiColorGreen "item name" AnsiColorReset " (e.g., '" AnsiColorYellow "use " AnsiColorGreen "honey" AnsiColorReset "').\n");                                                                            // Explain how to use items
+    printf(" \n👄 Talk: Type '" AnsiColorYellow "talk to" AnsiColorReset "' followed by an " AnsiBrightMagenta "NPC name" AnsiColorReset " (e.g., '" AnsiColorYellow "talk to " AnsiColorReset  AnsiBrightMagenta "John Pork" AnsiColorReset "').\n");                                                                                           // Explain how to talk
+    printf(" \n🧠 Instructions: Type '" AnsiColorYellow "help" AnsiColorReset "' or '" AnsiColorYellow "instructions" AnsiColorReset "' to see this message again.\n");                                                                                               // Explain how to open the instructions menu again
+    printf(" \n💀 Quit: Type '" AnsiColorYellow "quit" AnsiColorReset "' to exit the game.\n");            // Explain how to win the game
 }
 
 // Function to talk to NPCs
@@ -584,17 +641,22 @@ void talkTo(Player *player, char *name){                                        
     if (!player || !player->currentLocation) return;                                    // If none of the arguments are met then stop function
     Location *loc = player->currentLocation;                                            // Create a pointer to the player's location
     int choice = -1;                                                                    // Dialogue choices that the player can make
+    int FarmerID = lookupNPC("Farmer");                                                 // Store ID of Farmer
+    int HungryID = lookupNPC("Hungry NPC");                                             // Store ID of Hungry NPC
+    int ThugsID = lookupNPC("Thugs");                                                   // Store ID of the thugs
+    int HoneyID = lookupItem("Honey");                                                  // Store ID of Honey
+    int LunchID = lookupItem("Lunch Box");                                              // Store ID of Lunch box
+    int CigsID = lookupItem("Cigs");                                                    // Store ID of Cigs
 
-    if (loc->npcId == NPC_NONE){                                                        // If there isn't an NPC present, then...
+    if (loc->npcId == -1){                                                        // If there isn't an NPC present, then...
         printf("There's no one to talk to...\n");                                           // print disclaimer
         printf("\n> *sigh*");                                                               // Damn
         getchar();                                                                          // Press Enter
     }                                                         
         
     
-    else if (loc->npcId == NPC_FARMER && (strcasecmp(NPCs[0].name, name) == 0)){          // If farmer found, then...
-        if (Inventory[0].id == -1)                                                      // If player doesn't have honey yet 
-        {
+    else if (loc->npcId == FarmerID && (strcasecmp(NPCs[FarmerID].name, name) == 0)){       // If farmer found, then...
+        if (Inventory[HoneyID].id == -1){                                                   // If player doesn't have honey yet 
             printf(AnsiColorYellow "Gabe Itch:" AnsiColorReset " Well howdy there, stranger! Don't see many new faces 'round these parts. Somethin' I can help ya with? You look like you're searchin' for somethin'.\n");
 
             printf("\nPick a dialogue option:\n");                                      // Multiple choice interactions
@@ -603,7 +665,7 @@ void talkTo(Player *player, char *name){                                        
             printf(" 3. (Say nothing and leave)\n");                                    // chice 3
             printf("> ");                                                               // Nice UI
 
-            scanf("%i", &choice); // Obtain input 
+            scanf("%i", &choice); // Obtain input
             
             if (choice == 1)                                                            
             {
@@ -623,12 +685,19 @@ void talkTo(Player *player, char *name){                                        
                 printf("\n> Why thank you!");                                           // Little pause
                 getchar();                                                              // Press enter to continue
 
-                addItem(ITEM_HONEY, "Honey", "Sweet and Sticky!");                      // Obtain honey
+                addItem(lookupItem("Honey"), "Honey", "Sweet and Sticky!");             // Obtain honey
             }
-            else if (choice == 2)
+            else if (choice == 2){
+                clearInputBuffer();
                 printf(AnsiColorYellow "\nGabe Itch:" AnsiColorReset " Why thank you kindly! Takes a lot of work, but it's honest work. Be careful wanderin' around, especially in that forest.\n");
-            else if (choice == 3)
+                printf("\n> Your welcome.");                                            // Little pause
+                getchar();                                                              // Press enter to continue
+            }
+            else if (choice == 3){
                 printf("\nYou nod silently and back away.\n");
+                clearInputBuffer();
+            }
+                
             else
                 printf(AnsiColorYellow "\nGabe Itch:" AnsiColorReset " looks at you quizzically.\n");
         }
@@ -639,16 +708,15 @@ void talkTo(Player *player, char *name){                                        
         }
             
     }
-    else if (loc->npcId == NPC_HUNGRY_PERSON && strcasecmp(NPCs[1].name, name) == 0)
-    { // If hungry NPC is found then...
+    else if (loc->npcId == HungryID && strcasecmp(NPCs[HungryID].name, name) == 0){     // If hungry NPC is found then...
         printf("\nA figure huddles in the corner, shivering slightly. They look weak and malnourished.\n");
 
         // Check if the lunchbox has already been used (given to Hunk Ree)
-        if (Inventory[1].used == 1)                                                     // If the lunchbox has been used
+        if (Inventory[LunchID].used == 1)                               // If the lunchbox has been used
             printf(AnsiColorYellow "\nHunk Ree:" AnsiColorReset " Oh... it's you... *cough*... thanks again... for the food... Remember... the warning... be careful...\n");
 
         // Check if the player currently has the lunchbox and hasn't used it yet
-        else if (Inventory[1].id == 1 && Inventory[1].used == 0)                        // If player HAS the lunchbox, but didn't use it
+        else if (Inventory[LunchID].id == LunchID && Inventory[LunchID].used == 0)      // If player HAS the lunchbox, but didn't use it
         {
             printf(AnsiColorYellow "\nHunk Ree:" AnsiColorReset " *Ugh... so hungry... haven't eaten in... days... anything... please...*\n");
             printf("\nWhat do you want to say?\n");                                     // Multiple choice interactions
@@ -687,14 +755,14 @@ void talkTo(Player *player, char *name){                                        
             printf(AnsiBrightBlack"\nYou don't seem to have anything that could help them right now.\n"AnsiColorReset);
         }
     }
-    else if (loc->npcId == NPC_THUGS && strcasecmp(NPCs[2].name, name) == 0) // If thugs are found, then...
+    else if (loc->npcId == ThugsID && strcasecmp(NPCs[ThugsID].name, name) == 0) // If thugs are found, then...
     {
         // Check if the player has used the cigarettes (given them to the thugs)
-        if (Inventory[4].used == 1)                                                     // if used cigs
+        if (Inventory[CigsID].used == 1)                                                     // if used cigs
             printf("\nOne of the thugs nods curtly as you pass. They seem occupied with their smokes.\n");
 
         // Check if player has cigarettes but hasn't used them
-        else if (Inventory[4].id == ITEM_CIGARETTES && Inventory[4].used == 0)                        // If HAVE cigs, but not used
+        else if (Inventory[CigsID].id == CigsID && Inventory[CigsID].used == 0)                        // If HAVE cigs, but not used
         {
             printf("\nThe thugs block the alleyway, looking you up and down menacingly.\n");
             printf(AnsiColorYellow "\nThug Leader:" AnsiColorReset " Hold it right there. This is our turf. What's your business?\n");
@@ -731,8 +799,12 @@ void talkTo(Player *player, char *name){                                        
         else
         {
             printf("\nThe thugs block the alleyway, looking you up and down menacingly.\n");
-            printf(AnsiColorYellow "\nThug Leader:" AnsiColorReset " Hold it right there. This is our turf. Got any smokes on ya? No? Then beat it.\n");
-            printf("\nThey don't seem willing to let you pass without some kind of offering.\n");
+            printf(AnsiColorYellow "\nThug Leader:" AnsiColorReset " Hold it right there. This is our turf. Got any smokes on ya?\n");
+            printf("\n> Woah there, I don't want to cause any trouble.");
+            getchar();
+            printf("\nWell then, beat it!\n");
+            printf("\n> (They don't seem willing to let you pass without some kind of offering.)");
+            getchar();
         }
     }
 
@@ -760,6 +832,8 @@ void clearInputBuffer(){                                                        
 /* ************************* */
 
 int main() {                                                                                                        // Where it all starts...
+    UINT originalCP = GetConsoleOutputCP();                                                                         // Store OG code page, for emojis support
+    SetConsoleOutputCP(65001);                                                                                      // Make terminal display emojis and colors
     Graph *world = createGraph();                                                                                   // Create the graph (game world)
     Player player;                                                                                                  // Create the player
 
@@ -844,15 +918,33 @@ int main() {                                                                    
 
     // Calculate time
     time_t endTime = time(NULL);                                                                                    // Capture the ending time
-    double timeSpent = difftime(endTime, startTime);                                                                // Calculate the time spent playing
-    printf("Time played: %.0f seconds.\n", timeSpent);                                                              // Display the time spent
+    int timeSpent = difftime(endTime, startTime);                                                                   // Calculate the time spent playing
+    if (timeSpent < 60)                                                                                             // Less than 1 min
+        printf("Time played: %i seconds.\n", timeSpent);                                                          // Display the time spent, just the seconds
+    else if (timeSpent < 3600){                                                                                     // Less than 1 hour
+        int seconds = timeSpent % 60;                                                                               // Calculate seconds
+        int minutes = timeSpent / 60;                                                                               // Calculate minutes
+        printf("Time played: %i minutes and %i seconds.\n", minutes, seconds);                                      // Display time spent, both minutes and seconds
+    }
+    else if (timeSpent >= 3600){
+        int seconds = timeSpent % 60;                                                                               // Calculate seconds
+        int totalMinutes = timeSpent / 60;                                                                          // Calculate minutes
+        int minutes = totalMinutes % 60;                                                                            // Calculate total minutes
+        int hours = totalMinutes / 60;                                                                              // Calculate hours
+        printf("Time played: %i hours %i minutes and %i seconds.\n", hours, minutes, seconds);                      // Display time spent, in hours, minutes, and seconds
+    }
     
     // Display final score based on move count
-    if (player.moveCount <= 20) printf("Rank: " AnsiBrightGreen "A!" AnsiColorReset);                               // A Rank!
-    else if (player.moveCount <= 25) printf("Rank: " AnsiBrightCyan "B!" AnsiColorReset);                           // B Rank
-    else if (player.moveCount <= 30) printf("Rank: " AnsiBrightYellow "C" AnsiColorReset);                          // C Rank
-    else if (player.moveCount > 30)  printf("Rank: " AnsiColorBlue "D..." AnsiColorReset);                          // D Rank...
-    puts("");                                                                                                       // New Line Rank !!!!!!!!!
+    if (player.currentLocation->leadsToGameOver == 1 || strcasecmp(inputBuffer, "quit") == 0 || strcasecmp(inputBuffer, "-1") == 0) // -1 is EOF
+        printf("Rank: " AnsiBrightRed "F\n" AnsiColorReset);                                                        // It's an easy game, failing is cringe
+    else{
+        if (player.moveCount <= 20) printf("Rank: " AnsiBrightGreen "A!" AnsiColorReset);                           // A Rank!
+        else if (player.moveCount <= 30) printf("Rank: " AnsiBrightCyan "B!" AnsiColorReset);                       // B Rank
+        else if (player.moveCount <= 40) printf("Rank: " AnsiBrightYellow "C" AnsiColorReset);                      // C Rank
+        else if (player.moveCount > 40)  printf("Rank: " AnsiColorBlue "D..." AnsiColorReset);                      // D Rank...
+        puts("");                                                                                                   // New Line Rank !!!!!!!!!
+    }
+        
         
     printf("Total moves made: %d\n", player.moveCount);                                                             // Display Final Score
 
@@ -862,6 +954,7 @@ int main() {                                                                    
     // printf("Cleaning up resources...\n");
     freeGraph(world);                                                                                               // Delete the Graph
     world = NULL;
+    SetConsoleOutputCP(originalCP);                                                                                // Revert back to OG code page
 
     printf("Goodbye!\n" AnsiColorReset);                                                                            // Momma taught me manners
 }

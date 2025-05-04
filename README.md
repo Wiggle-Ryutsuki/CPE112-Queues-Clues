@@ -59,56 +59,64 @@ Find your lost pet—but how you get there is up to you.
 
 ## Input and Output
 
-### Movement
+### 👟 Movement: Exploring the World
 
-Moving Correctly
+Getting around is simple! Look for exits listed in `[brackets]` within the location description. Type the name of the place you want to go. Feeling lost? Type `back` to retrace your steps to the previous area.
 
-**Current location:** `Your House`
+---
 
-    ---  Your House  ---
-    Cozy, familiar, but your cat is missing! The only way out is the 'village'.
-    Exits: [village]
+**Scenario 1: Moving to a New Location**
 
-**Choices:** [Village]
+*   **You find yourself in:** `Your House`
+    > ```
+    > --- Your House ---
+    > Cozy, familiar, but your cat is missing! The only way out is the 'village'.
+    > Exits: [village]
+    > ```
+*   **Your Command:** `village`
+*   **Game Output:** You step out into the village...
+    > ```
+    > --- Village Square ---
+    > Bustling with activity. Paths lead to the 'farm', and the 'forest'. Going 'back' home is also an option.
+    > Exits: [forest], [farm]
+    > ```
+    *(You successfully moved to the Village Square!)*
 
-**Input:** `Village`
+---
 
-**Output:**
+**Scenario 2: Trying an Invalid Direction**
 
-    ---  Village Square  ---
-    Bustling with activity. Paths lead to the 'farm', and the 'forest'. Going 'back' home is also an option.
-    Exits: [forest], [farm]
+*   **You find yourself in:** `Your House`
+    > ```
+    > --- Your House ---
+    > Cozy, familiar, but your cat is missing! The only way out is the 'village'.
+    > Exits: [village]
+    > ```
+*   **Your Command:** `forest`
+*   **Game Output:** That path isn't accessible from here.
+    > ```
+    > You can't go 'forest' from here.
+    > ```
+    *(Your location remains `Your House`)*
 
-Moving Incorrectly
+---
 
-**Current location:** `Your House`
+**Scenario 3: Trying to Go `back` Too Far**
 
-    ---  Your House  ---
-    Cozy, familiar, but your cat is missing! The only way out is the 'village'.
-    Exits: [village]
+*   **You find yourself in:** `Your House` (the starting point)
+    > ```
+    > --- Your House ---
+    > Cozy, familiar, but your cat is missing! The only way out is the 'village'.
+    > Exits: [village]
+    > ```
+*   **Your Command:** `back`
+*   **Game Output:** You can't go back further than where you began!
+    > ```
+    > You can't go back any further.
+    > ```
+    *(Your location remains `Your House`)*
 
-**Choices:** [Village]
-
-**Input:** `back`
-
-**Output:**
-
-    You can't go back any further.
-
-**Current location:** `Your House`
-
-    ---  Your House  ---
-    Cozy, familiar, but your cat is missing! The only way out is the 'village'.
-    Exits: [village]
-
-**Choices:** [Village]
-
-**Input:** `forest`
-
-**Output:**
-
-    You can't go 'forest' from here.
-
+---
 ### Look
 
 **Current location:** `Forest/Growl`

@@ -6,12 +6,11 @@
 #include <string.h>         // For string copy and compare
 #include <strings.h>        // For strcasecmp (case-insensitive compare)
 #include <time.h>           // For the time score later
-#include <windows.h>        // WHY DOESN'T WINDOWS KNOW WHAT UTF-8 ISSSSSSSSSSSSSSSSSSsss >:((((
 #include "inventory.h"      // The inventory system
 #include "world.h"          // The graph
 #include "history.h"        // The stack
 #include "asciiart.h"       // The ASCII art
-#include "hashtable.h"      // The hash table
+#include "hashTable.h"      // The hash table
 
 // ANSI Color Codes
 // For more Finesse

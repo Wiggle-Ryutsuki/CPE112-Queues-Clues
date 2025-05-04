@@ -4,9 +4,7 @@
 
 #include "game.h"
 
-int main() {                                                                                                        // Where it all starts...
-    UINT originalCP = GetConsoleOutputCP();                                                                         // Store OG code page, for emojis support
-    SetConsoleOutputCP(65001);                                                                                      // Make terminal display emojis and colors
+int main() {                                                                                                        // Where it all starts...                                                  
     Graph *world = createGraph();                                                                                   // Create the graph (game world)
     Player player;                                                                                                  // Create the player
 
@@ -126,8 +124,7 @@ int main() {                                                                    
     // ----------------
     // printf("Cleaning up resources...\n");
     freeGraph(world);                                                                                               // Delete the Graph
-    world = NULL;
-    SetConsoleOutputCP(originalCP);                                                                                // Revert back to OG code page
+    world = NULL;                                                                            // Revert back to OG code page
 
     printf("Goodbye!\n" AnsiColorReset);                                                                            // Momma taught me manners
 }

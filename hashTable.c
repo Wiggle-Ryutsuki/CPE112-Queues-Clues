@@ -1,4 +1,4 @@
-#include "hashtable.h"
+#include "hashTable.h"
 
 // Global Hash Table Declarations 
 LocationHashNode* locationHashTable[HASH_TABLE_SIZE_LOCATIONS];     // Hash table of locations

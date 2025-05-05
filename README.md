@@ -28,7 +28,7 @@
 
 Compile the code:
 
-    gcc main.c game.c history.c world.c inventory.c asciiart.c hashTable.c -o Game
+    gcc main.c game.c history.c world.c inventory.c asciiart.c hashTable.c -o GameMAC
 
 Run the game program:
 

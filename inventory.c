@@ -129,7 +129,8 @@ void printInventory(){
 
     for (int i = 0; i < MAX_OBJECTS; i++) {
         if (Inventory[i].id != -1) {
-            char desc = Inventory[i].description;
+            char desc[1000];
+            strcpy(desc, Inventory[i].description);
             int descLen = strlen(desc);
             int printed = 0;
     

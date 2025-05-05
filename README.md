@@ -63,29 +63,29 @@ Find your lost pet—but how you get there is up to you.
 
 Getting around is simple! Look for exits listed in `[brackets]` within the location description. Type the name of the place you want to go. Feeling lost? Type `back` to retrace your steps to the previous area.
 
----
-
 #### Scenario 1: Moving to a New Location
 
 - **You find yourself in:** `Your House`
 >
-    > ```
+    > 
+
     > --- Your House ---
     > Cozy, familiar, but your cat is missing! The only way out is the 'village'.
     > Exits: [village]
-    > ```
+
 >
 - **Your Command:** `village`
 
 - **Game Output:** You step out into the village...
 >
-    > ```
+    >
+
     > --- Village Square ---
     > Bustling with activity. Paths lead to the 'farm', and the 'forest'. Going 'back' home is also an option.
     > Exits: [forest], [farm]
-    > ```
 >
-    *(You successfully moved to the Village Square!)*
+
+(You successfully moved to the Village Square!)
 
 ---
 
@@ -93,21 +93,22 @@ Getting around is simple! Look for exits listed in `[brackets]` within the locat
 
 - **You find yourself in:** `Your House`
 >
-    > ```
+    >
+
     > --- Your House ---
     > Cozy, familiar, but your cat is missing! The only way out is the 'village'.
     > Exits: [village]
-    > ```
 >
 - **Your Command:** `forest`
 
 - **Game Output:** That path isn't accessible from here.
 >
-    > ```
+    >
+
     > You can't go 'forest' from here.
-    > ```
 >
-    *(Your location remains `Your House`)*
+
+(Your location remains `Your House`)
 
 ---
 
@@ -115,21 +116,22 @@ Getting around is simple! Look for exits listed in `[brackets]` within the locat
 
 - **You find yourself in:** `Your House` (the starting point)
 >
-    > ```
+    >
+
     > --- Your House ---
     > Cozy, familiar, but your cat is missing! The only way out is the 'village'.
     > Exits: [village]
-    > ```
 >
 - **Your Command:** `back`
 
 - **Game Output:** You can't go back further than where you began!
 >
-    > ```
+    >
+
     > You can't go back any further.
-    > ```
 >
-    *(Your location remains `Your House`)*
+
+(Your location remains `Your House`)
 
 ---
 
@@ -277,8 +279,7 @@ If you forget the commands, just type `help` or `instructions`.
 - **Any Location**
 - **Your Command:** `help`
 - **Game Output:** The game reminds you how to play...
->
-    > ```
+
     > --- Instructions ---
     > Objective: Explore the world and find your lost furry friend.
     > Commands:
@@ -298,8 +299,7 @@ If you forget the commands, just type `help` or `instructions`.
     > 🧠 Instructions: Type 'help' or 'instructions' to see this message again.
     >
     > 💀 Quit: Type 'quit' to exit the game.
-    > ```
->
+
     *(You are shown the list of available commands.)*
 
 ---

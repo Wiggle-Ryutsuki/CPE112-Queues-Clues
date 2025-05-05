@@ -127,30 +127,25 @@ Getting around is simple! Look for exits listed in `[brackets]` within the locat
 
 Use `look` to get a more detailed description of your current location and potentially find hidden details.
 
----
-
 #### Scenario: Looking around the Cave Entrance
 
 - **You find yourself in:** `Cave Entrance (Bear)`
 >
-    > ```
     > ---  Cave Entrance (Bear)  ---
     > A large, grumpy bear blocks the cave entrance! It seems agitated. Maybe something sweet would calm it? You can 'approach' the cave or go 'back' to the forest entrance.
     > Exits: [approach]
-    > ```
 >
 - **Your Command:** `look`
 
 - **Game Output:** You take a closer look...
 >
-    > ```
     > --- Looking Around Cave Entrance (Bear) ---
     > A large, grumpy bear blocks the cave entrance! It seems agitated. Maybe something sweet would calm it? You can 'approach' the cave or go 'back' to the forest entrance.
     > The bear looks really big and angry. Going near it seems like a bad idea.
     > Exits: [approach]
-    > ```
 >
-    *(You get a more detailed description of the area.)*
+
+(You get a more detailed description of the area.)
 
 ---
 
@@ -158,24 +153,21 @@ Use `look` to get a more detailed description of your current location and poten
 
 Type `inv` or `inventory` to see the items you are currently carrying.
 
----
-
 #### Scenario 1: Checking an Empty Inventory
 
 - **Current Inventory State:** Empty
 - **Your Command:** `inventory`
 - **Game Output:** You check your pockets...
 >
-    > ```
     > ===================================================
     >                      INVENTORY
     > ===================================================
     > | Name       | Description                        |
     > |------------+------------------------------------|
     > ===================================================
-    > ```
 >
-    *(Your inventory is currently empty.)*
+
+(Your inventory is currently empty.)
 
 ---
 
@@ -185,7 +177,6 @@ Type `inv` or `inventory` to see the items you are currently carrying.
 - **Your Command:** `inv`
 - **Game Output:** You check your pockets...
 >
-    > ```
     > ===================================================
     >                         INVENTORY
     > ===================================================
@@ -193,9 +184,9 @@ Type `inv` or `inventory` to see the items you are currently carrying.
     > |------------+------------------------------------|
     > | Honey      | Sweet and Sticky!                  |
     > ===================================================
-    > ```
 >
-    *(You see the `Honey` you picked up earlier.)*
+
+(You see the `Honey` you picked up earlier.)
 
 ---
 
@@ -203,7 +194,6 @@ Type `inv` or `inventory` to see the items you are currently carrying.
 
 Use items from your inventory by typing `use` followed by the item name. Items can only be used in specific locations or situations.
 
----
 
 #### Scenario 1: Using an Item Successfully
 
@@ -213,13 +203,12 @@ Use items from your inventory by typing `use` followed by the item name. Items c
 - **Your Command:** `use honey`
 - **Game Output:** You offer the honey to the bear...
 >
-    > ```
     > ---  Cave Entrance (Bear)  ---
     > The bear sniffs the honey, takes the jar, and seems much calmer now, licking happily. The entrance is clear! You can 'enter' the cave or go 'back' to the forest entrance.
     > Exits: [enter]
-    > ```
 >
-    *(The `Honey` is consumed, the bear is pacified, and a new path `enter` opens up.)*
+
+(The `Honey` is consumed, the bear is pacified, and a new path `enter` opens up.)
 
 ---
 
@@ -231,11 +220,10 @@ Use items from your inventory by typing `use` followed by the item name. Items c
 - **Your Command:** `use honey`
 - **Game Output:** You look around, but...
 >
-    > ```
     > That doesn't seem to do anything here.
-    > ```
 >
-    *(The `Honey` remains in your inventory. Nothing changes in the location.)*
+
+(The `Honey` remains in your inventory. Nothing changes in the location.)
 
 ---
 
@@ -247,12 +235,12 @@ Use items from your inventory by typing `use` followed by the item name. Items c
 - **Your Command:** `use silver key`
 - **Game Output:** You fumble with a non-existent (or irrelevant) key...
 >
-    > ```
     > You can't use 'silver key' here.
-    > ```
 >
-    *(Or, if you don't have the item: `You don't have 'silver key'!`)*
-    *(Nothing changes. The bear remains grumpy.)*
+
+(Or, if you don't have the item: `You don't have 'silver key'!`)
+
+(Nothing changes. The bear remains grumpy.)
 
 ---
 
@@ -260,14 +248,13 @@ Use items from your inventory by typing `use` followed by the item name. Items c
 
 If you forget the commands, just type `help` or `instructions`.
 
----
-
 #### Scenario: Requesting Help
 
 - **Any Location**
 - **Your Command:** `help`
 - **Game Output:** The game reminds you how to play...
 
+>
     > --- Instructions ---
     > Objective: Explore the world and find your lost furry friend.
     > Commands:
@@ -287,8 +274,9 @@ If you forget the commands, just type `help` or `instructions`.
     > 🧠 Instructions: Type 'help' or 'instructions' to see this message again.
     >
     > 💀 Quit: Type 'quit' to exit the game.
+>
 
-    *(You are shown the list of available commands.)*
+(You are shown the list of available commands.)
 
 ---
 
@@ -296,23 +284,20 @@ If you forget the commands, just type `help` or `instructions`.
 
 Type `quit` to end your adventure.
 
----
-
 #### Scenario: Ending the Game Session
 
 - **Any Location**
 - **Your Command:** `quit`
 - **Game Output:** The game prepares to close...
 >
-    > ```
     > Exiting game.
     > Time played: 0h 15m 32s
     > Rank: B
     > Total moves made: 42
     > Goodbye!
-    > ```
 >
-    *(The game exits, displaying your session statistics.)*
+
+(The game exits, displaying your session statistics.)
 
 ## Team Distribution
 

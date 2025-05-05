@@ -304,16 +304,16 @@ Type `quit` to end your adventure.
 
 ID: 67070503472
 
-Game Loop and World Traversal
+Focus: Game Loop and World Traversal 
 
 ### Maimoona Aziz
 
 ID: 67070503473
 
-Project Coordinator
+Focus: Project Coordinator and Inventory Implementation
 
 ### Sao Wa Nee
 
 ID: 67070503456
 
-Game Accesories
+Focus: Player Movement History

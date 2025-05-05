@@ -67,8 +67,6 @@ Getting around is simple! Look for exits listed in `[brackets]` within the locat
 
 - **You find yourself in:** `Your House`
 >
-    > 
-
     > --- Your House ---
     > Cozy, familiar, but your cat is missing! The only way out is the 'village'.
     > Exits: [village]
@@ -78,8 +76,6 @@ Getting around is simple! Look for exits listed in `[brackets]` within the locat
 
 - **Game Output:** You step out into the village...
 >
-    >
-
     > --- Village Square ---
     > Bustling with activity. Paths lead to the 'farm', and the 'forest'. Going 'back' home is also an option.
     > Exits: [forest], [farm]
@@ -93,8 +89,6 @@ Getting around is simple! Look for exits listed in `[brackets]` within the locat
 
 - **You find yourself in:** `Your House`
 >
-    >
-
     > --- Your House ---
     > Cozy, familiar, but your cat is missing! The only way out is the 'village'.
     > Exits: [village]
@@ -103,8 +97,6 @@ Getting around is simple! Look for exits listed in `[brackets]` within the locat
 
 - **Game Output:** That path isn't accessible from here.
 >
-    >
-
     > You can't go 'forest' from here.
 >
 
@@ -116,8 +108,6 @@ Getting around is simple! Look for exits listed in `[brackets]` within the locat
 
 - **You find yourself in:** `Your House` (the starting point)
 >
-    >
-
     > --- Your House ---
     > Cozy, familiar, but your cat is missing! The only way out is the 'village'.
     > Exits: [village]
@@ -126,8 +116,6 @@ Getting around is simple! Look for exits listed in `[brackets]` within the locat
 
 - **Game Output:** You can't go back further than where you began!
 >
-    >
-
     > You can't go back any further.
 >
 

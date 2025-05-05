@@ -20,8 +20,9 @@
 
 ### Prerequisites
 
-- A C compiler (gcc)
-- Terminal or command line access
+- This program works only on Windows (due to the windows.h library).
+- A C compiler (gcc).
+- Terminal or command line access.
 
 ### How To Run The Game
 

@@ -194,7 +194,6 @@ Type `inv` or `inventory` to see the items you are currently carrying.
 
 Use items from your inventory by typing `use` followed by the item name. Items can only be used in specific locations or situations.
 
-
 #### Scenario 1: Using an Item Successfully
 
 - **You find yourself in:** `Cave Entrance (Bear)`

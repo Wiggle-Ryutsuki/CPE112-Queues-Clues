@@ -20,15 +20,15 @@
 
 ### Prerequisites
 
-- A C compiler (gcc)
-- Terminal or command line access
+- This program works on MAC and LINUX (due to the the lack of windows.h).
+- A C compiler (gcc).
+- Terminal or command line access.
 
 ### How To Run The Game
 
 Compile the code:
 
     gcc main.c game.c history.c world.c inventory.c asciiart.c hashTable.c -o Game
-
 
 Run the game program:
 
@@ -64,181 +64,240 @@ Find your lost pet—but how you get there is up to you.
 
 Getting around is simple! Look for exits listed in `[brackets]` within the location description. Type the name of the place you want to go. Feeling lost? Type `back` to retrace your steps to the previous area.
 
----
+#### Scenario 1: Moving to a New Location
 
-**Scenario 1: Moving to a New Location**
-
-*   **You find yourself in:** `Your House`
-    > ```
+- **You find yourself in:** `Your House`
+>
     > --- Your House ---
     > Cozy, familiar, but your cat is missing! The only way out is the 'village'.
     > Exits: [village]
-    > ```
-*   **Your Command:** `village`
-*   **Game Output:** You step out into the village...
-    > ```
+
+>
+- **Your Command:** `village`
+
+- **Game Output:** You step out into the village...
+>
     > --- Village Square ---
     > Bustling with activity. Paths lead to the 'farm', and the 'forest'. Going 'back' home is also an option.
     > Exits: [forest], [farm]
-    > ```
-    *(You successfully moved to the Village Square!)*
+>
+
+(You successfully moved to the Village Square!)
 
 ---
 
-**Scenario 2: Trying an Invalid Direction**
+#### Scenario 2: Trying an Invalid Direction
 
-*   **You find yourself in:** `Your House`
-    > ```
+- **You find yourself in:** `Your House`
+>
     > --- Your House ---
     > Cozy, familiar, but your cat is missing! The only way out is the 'village'.
     > Exits: [village]
-    > ```
-*   **Your Command:** `forest`
-*   **Game Output:** That path isn't accessible from here.
-    > ```
+>
+- **Your Command:** `forest`
+
+- **Game Output:** That path isn't accessible from here.
+>
     > You can't go 'forest' from here.
-    > ```
-    *(Your location remains `Your House`)*
+>
+
+(Your location remains `Your House`)
 
 ---
 
-**Scenario 3: Trying to Go `back` Too Far**
+#### Scenario 3: Trying to Go `back` Too Far
 
-*   **You find yourself in:** `Your House` (the starting point)
-    > ```
+- **You find yourself in:** `Your House` (the starting point)
+>
     > --- Your House ---
     > Cozy, familiar, but your cat is missing! The only way out is the 'village'.
     > Exits: [village]
-    > ```
-*   **Your Command:** `back`
-*   **Game Output:** You can't go back further than where you began!
-    > ```
+>
+- **Your Command:** `back`
+
+- **Game Output:** You can't go back further than where you began!
+>
     > You can't go back any further.
-    > ```
-    *(Your location remains `Your House`)*
+>
+
+(Your location remains `Your House`)
 
 ---
-### Look
 
-**Current location:** `Forest/Growl`
+### 👀 Look: Examining Your Surroundings
 
-    ---  Cave Entrance (Bear)  ---
-    A large, grumpy bear blocks the cave entrance! It seems agitated. Maybe something sweet would calm it? You can 'approach' the cave or go 'back' to the forest entrance.
-    Exits: [approach]
+Use `look` to get a more detailed description of your current location and potentially find hidden details.
 
-**Input:** `look`
+#### Scenario: Looking around the Cave Entrance
 
-**Output:**
+- **You find yourself in:** `Cave Entrance (Bear)`
+>
+    > ---  Cave Entrance (Bear)  ---
+    > A large, grumpy bear blocks the cave entrance! It seems agitated. Maybe something sweet would calm it? You can 'approach' the cave or go 'back' to the forest entrance.
+    > Exits: [approach]
+>
+- **Your Command:** `look`
 
-    --- Looking Around Cave Entrance (Bear) ---
-    A large, grumpy bear blocks the cave entrance! It seems agitated. Maybe something sweet would calm it? You can 'approach' the cave or go 'back' to the forest entrance.
-    The bear looks really big and angry. Going near it seems like a bad idea.
-    Exits: [approach]
+- **Game Output:** You take a closer look...
+>
+    > --- Looking Around Cave Entrance (Bear) ---
+    > A large, grumpy bear blocks the cave entrance! It seems agitated. Maybe something sweet would calm it? You can 'approach' the cave or go 'back' to the forest entrance.
+    > The bear looks really big and angry. Going near it seems like a bad idea.
+    > Exits: [approach]
+>
 
-### Inventory
+(You get a more detailed description of the area.)
 
-**Current Inventory State:** Empty
+---
 
-**Input:** `inventory`
+### 🎒 Inventory: Checking Your Items
 
-**Output:**
+Type `inv` or `inventory` to see the items you are currently carrying.
 
-    ===================================================
-                     INVENTORY
-    ===================================================
-    | Name       | Description                        |
-    |------------+------------------------------------|
-    ===================================================
+#### Scenario 1: Checking an Empty Inventory
 
-**Current Inventory State:** Obtained Honey
+- **Current Inventory State:** Empty
+- **Your Command:** `inventory`
+- **Game Output:** You check your pockets...
+>
+    > ===================================================
+    >                      INVENTORY
+    > ===================================================
+    > | Name       | Description                        |
+    > |------------+------------------------------------|
+    > ===================================================
+>
 
-**Input:** `inv`
+(Your inventory is currently empty.)
 
-**Output:**
+---
 
-    ===================================================
-                        INVENTORY
-    ===================================================
-    | Name       | Description                        |
-    |------------+------------------------------------|
-    | Honey      | Sweet and Sticky!                  |
-    ===================================================
+#### Scenario 2: Checking Inventory with an Item
 
-### Use
+- **Current Inventory State:** You are carrying `Honey`.
+- **Your Command:** `inv`
+- **Game Output:** You check your pockets...
+>
+    > ===================================================
+    >                         INVENTORY
+    > ===================================================
+    > | Name       | Description                        |
+    > |------------+------------------------------------|
+    > | Honey      | Sweet and Sticky!                  |
+    > ===================================================
+>
 
-**Current Inventory Status:** Honey
+(You see the `Honey` you picked up earlier.)
 
-**Location:** Forest/Growl
+---
 
-**Intended Use:** Yes
+### 🛠️ Use: Interacting with Items
 
-**Input:** `use honey`
+Use items from your inventory by typing `use` followed by the item name. Items can only be used in specific locations or situations.
 
-**Output:**
+#### Scenario 1: Using an Item Successfully
 
-    ---  Cave Entrance (Bear)  ---
-    The bear is now preoccupied with the honey, you can now 'enter' the cave, or go 'back' to the forest entrance
-    Exits: [enter]
+- **You find yourself in:** `Cave Entrance (Bear)`
+- **Current Inventory State:** You are carrying `Honey`.
+- **Situation:** A grumpy bear blocks the path.
+- **Your Command:** `use honey`
+- **Game Output:** You offer the honey to the bear...
+>
+    > ---  Cave Entrance (Bear)  ---
+    > The bear sniffs the honey, takes the jar, and seems much calmer now, licking happily. The entrance is clear! You can 'enter' the cave or go 'back' to the forest entrance.
+    > Exits: [enter]
+>
 
-**Current Inventory Status:** Honey
+(The `Honey` is consumed, the bear is pacified, and a new path `enter` opens up.)
 
-**Location:** Village
+---
 
-**Intended Use:** No
+#### Scenario 2: Using an Item in the Wrong Place
 
-**Input:** `use honey`
+- **You find yourself in:** `Village Square`
+- **Current Inventory State:** You are carrying `Honey`.
+- **Situation:** No apparent use for honey here.
+- **Your Command:** `use honey`
+- **Game Output:** You look around, but...
+>
+    > That doesn't seem to do anything here.
+>
 
-**Output:**
+(The `Honey` remains in your inventory. Nothing changes in the location.)
 
-    That doesn't work...
+---
 
-**Current Inventory Status:** Honey
+#### Scenario 3: Trying to Use an Item Not Applicable (or Not Possessed)
 
-**Location:** Forest/Growl
+- **You find yourself in:** `Cave Entrance (Bear)`
+- **Current Inventory State:** You are carrying `Honey`.
+- **Situation:** Bear blocks the path, but you try using something else.
+- **Your Command:** `use silver key`
+- **Game Output:** You fumble with a non-existent (or irrelevant) key...
+>
+    > You can't use 'silver key' here.
+>
 
-**Intended Use:** No
+(Or, if you don't have the item: `You don't have 'silver key'!`)
 
-**Input:** `use silver key`
+(Nothing changes. The bear remains grumpy.)
 
-**Output:**
+---
 
-    That doesn't work...
+### 🧠 Help: Getting Instructions
 
-### Help
+If you forget the commands, just type `help` or `instructions`.
 
-**Input:** `help`
+#### Scenario: Requesting Help
 
-**Output:**
+- **Any Location**
+- **Your Command:** `help`
+- **Game Output:** The game reminds you how to play...
 
-    --- Instructions ---
-    Objective: Explore the world and find your lost furry friend.
-    Commands:
+>
+    > --- Instructions ---
+    > Objective: Explore the world and find your lost furry friend.
+    > Commands:
+    >
+    > 👟 Movement: Enter a direction shown in [brackets] (e.g., 'village', 'left') to move.
+    >
+    >       -> Enter 'back' to return to the previous location you visited.
+    >
+    > 👀 Look: Type 'look' to examine your current surroundings more closely for hints.
+    >
+    > 🎒 Inventory: Type 'inv' or 'inventory' to see your items.
+    >
+    >       -> Use [item]: Type 'use' followed by an item name (e.g., 'use honey').
+    >
+    > 👄 Talk: Type 'talk to' followed by an NPC name (e.g., 'talk to John Pork').
+    >
+    > 🧠 Instructions: Type 'help' or 'instructions' to see this message again.
+    >
+    > 💀 Quit: Type 'quit' to exit the game.
+>
 
-    👟 Movement: Enter a direction shown in [brackets] (e.g., 'village', 'left') to move.
+(You are shown the list of available commands.)
 
-          -> Enter 'back' to return to the previous location you visited.
+---
 
-    👀 Look: Type 'look' to examine your current surroundings more closely for hints.
+### 💀 Quit: Exiting the Game
 
-    🎒 Inventory: Type 'inv' or 'inventory' to see your items.
+Type `quit` to end your adventure.
 
-          -> Use [item]: Type 'use' followed by an item name (e.g., 'use honey').
+#### Scenario: Ending the Game Session
 
-    👄 Talk: Type 'talk to' followed by an NPC name (e.g., 'talk to John Pork').
+- **Any Location**
+- **Your Command:** `quit`
+- **Game Output:** The game prepares to close...
+>
+    > Exiting game.
+    > Time played: 0h 15m 32s
+    > Rank: B
+    > Total moves made: 42
+    > Goodbye!
+>
 
-    🧠 Instructions: Type 'help' or 'instructions' to see this message again.
-
-    💀 Quit: Type 'quit' to exit the game.
-
-### Quit
-
-**Input:** `quit`
-
-    Exiting game.
-    Time played: [Real time gameplay]
-    Rank: [Letter]
-    Total moves made: [Total moves player successfully made]
-    Goodbye!
+(The game exits, displaying your session statistics.)
 
 ## Team Distribution
 
@@ -246,16 +305,16 @@ Getting around is simple! Look for exits listed in `[brackets]` within the locat
 
 ID: 67070503472
 
-Game Loop and World Traversal
+Focus: Game Loop and World Traversal
 
 ### Maimoona Aziz
 
 ID: 67070503473
 
-Project Coordinator
+Focus: Project Coordinator and Inventory Implementation
 
 ### Sao Wa Nee
 
 ID: 67070503456
 
-Game Accesories
+Focus: Player Movement History

@@ -304,7 +304,7 @@ Type `quit` to end your adventure.
 
 ID: 67070503472
 
-Focus: Game Loop and World Traversal 
+Focus: Game Loop and World Traversal
 
 ### Maimoona Aziz
 

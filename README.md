@@ -32,7 +32,7 @@ Compile the code (Windows):
     
 Compile the code (Mac/Linux):
 
-    gcc mainMAC.c game.c history.c world.c inventory.c asciiart.c hashTable.c -o GameMAC
+    gcc mainMAC.c game.c history.c world.c inventory.c asciiart.c hashTable.c -o Game
 
 Run the game program:
 
